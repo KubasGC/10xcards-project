@@ -1,94 +1,128 @@
-# 10x Astro Starter
+# 10xCards
 
-A modern, opinionated starter template for building fast, accessible, and AI-friendly web applications.
+![version](https://img.shields.io/badge/version-0.0.1-blue) ![status](https://img.shields.io/badge/status-WIP-orange) ![node](https://img.shields.io/badge/node-22.14.0-43853d) ![license](https://img.shields.io/badge/license-MIT-lightgrey)
 
-## Tech Stack
+10xCards helps you quickly generate, organize, and learn with high‑quality flashcards. It lowers the barrier to spaced repetition by using generative AI to draft flashcard candidates from pasted text (with an optional hint) and guiding users through simple review, acceptance, and study flows.
 
-- [Astro](https://astro.build/) v5.5.5 - Modern web framework for building fast, content-focused websites
-- [React](https://react.dev/) v19.0.0 - UI library for building interactive components
-- [TypeScript](https://www.typescriptlang.org/) v5 - Type-safe JavaScript
-- [Tailwind CSS](https://tailwindcss.com/) v4.0.17 - Utility-first CSS framework
+## Table of contents
 
-## Prerequisites
+- [10xCards](#10xcards)
+  - [Table of contents](#table-of-contents)
+    - [Project description](#project-description)
+    - [Tech stack](#tech-stack)
+    - [Getting started locally](#getting-started-locally)
+    - [Available scripts](#available-scripts)
+    - [Project scope](#project-scope)
+    - [Project status](#project-status)
+    - [License](#license)
 
-- Node.js v22.14.0 (as specified in `.nvmrc`)
-- npm (comes with Node.js)
+### Project description
 
-## Getting Started
+10xCards enables fast creation of quality flashcards using AI and provides an intuitive acceptance/editing flow plus spaced repetition study sessions. The MVP focuses on:
 
-1. Clone the repository:
+- Generating flashcard candidates from pasted text and an optional hint
+- Manual card creation with live character counters (200 front, 600 back)
+- Browsing, editing, and deleting accepted cards organized into sets
+- Basic email/password authentication (sign up, sign in, sign out)
+- Pending section for unaccepted candidates (edit/accept/reject)
+- Spaced repetition study sessions using an open‑source library
+- Daily AI generation limits (50/user, reset at midnight) and clear messaging
+- Anonymous generation metadata (model, time, tokens, cost) without storing input/output text
+
+For more background and user stories, see Product Requirements (Polish): [`./.ai/prd.md`](./.ai/prd.md).
+
+### Tech stack
+
+- Frontend: Astro 5 + React 19, TypeScript 5
+- Styling: Tailwind CSS 4, shadcn/ui
+- Backend/BaaS: Supabase (PostgreSQL, SDK, auth)
+- AI provider: OpenRouter (multi‑model access and cost controls)
+- CI/CD: GitHub Actions
+- Hosting: DigitalOcean (Docker image)
+
+Reference: [`./.ai/tech-stack.md`](./.ai/tech-stack.md)
+
+### Getting started locally
+
+Prerequisites:
+
+- Node.js 22.14.0 (see `.nvmrc`)
+- npm (uses the provided `package-lock.json`)
+
+Setup:
 
 ```bash
-git clone https://github.com/przeprogramowani/10x-astro-starter.git
-cd 10x-astro-starter
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Run the development server:
-
-```bash
+git clone <this-repo-url>
+cd 10xcards-project
+nvm use # ensures Node 22.14.0
+npm ci
 npm run dev
 ```
 
-4. Build for production:
+Useful commands:
 
 ```bash
+# Build production assets to ./dist
 npm run build
+
+# Preview the built site locally
+npm run preview
+
+# Lint and auto-fix issues
+npm run lint
+npm run lint:fix
+
+# Format supported files
+npm run format
 ```
 
-## Available Scripts
+Notes:
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint issues
+- This repository currently contains the Astro + React scaffold and UI foundations. Supabase and OpenRouter configuration will be added during implementation of the MVP features (see Scope below).
+- The Astro dev server typically runs at http://localhost:3000 by default.
 
-## Project Structure
+### Available scripts
 
-```md
-.
-├── src/
-│   ├── layouts/    # Astro layouts
-│   ├── pages/      # Astro pages
-│   │   └── api/    # API endpoints
-│   ├── components/ # UI components (Astro & React)
-│   └── assets/     # Static assets
-├── public/         # Public assets
-```
+- `dev`: Start the Astro development server (default: http://localhost:3000)
+- `build`: Build the site for production into `dist/`
+- `preview`: Preview the production build locally
+- `astro`: Run the Astro CLI directly
+- `lint`: Run ESLint over the codebase
+- `lint:fix`: Attempt to auto‑fix lint issues
+- `format`: Run Prettier to format supported files
 
-## AI Development Support
+### Project scope
 
-This project is configured with AI development tools to enhance the development experience, providing guidelines for:
+MVP in scope:
 
-- Project structure
-- Coding practices
-- Frontend development
-- Styling with Tailwind
-- Accessibility best practices
-- Astro and React guidelines
+- Accounts: email + password (register, login, logout); protected routes and APIs
+- Sets: create, list, view; automatic AI categorization for analytics
+- AI generation: paste source text + optional hint → list of candidates; edit before accept; accept/reject; assign accepted cards to existing/new set; daily limit 50/user with midnight reset and clear messaging; Pending screen for unaccepted candidates
+- Manual cards: create with character limits and live counters (200 front, 600 back); edit and delete accepted cards
+- Study: integrate an open‑source spaced repetition library; start a session for a chosen set; present due cards; record user ratings per library semantics
+- Analytics (anonymous): record model, generation time, tokens, cost; never store user input/output text
 
-### Cursor IDE
+Out of scope (MVP):
 
-The project includes AI rules in `.cursor/rules/` directory that help Cursor IDE understand the project structure and provide better code suggestions.
+- Custom/advanced repetition algorithms (e.g., SuperMemo, Anki)
+- Multi‑format import (PDF, DOCX, etc.)
+- Sharing sets between users
+- External education platform integrations
+- Native mobile apps (web only)
 
-### GitHub Copilot
+Key constraints and assumptions:
 
-AI instructions for GitHub Copilot are available in `.github/copilot-instructions.md`
+- Daily AI generation limit: 50 per user; reset at midnight
+- Only accepted cards and account data are stored; rejected candidates and raw pasted text are not persisted
+- Automatic set categorization is used only for analytics
 
-### Windsurf
+For full user stories and acceptance criteria, see [`./.ai/prd.md`](./.ai/prd.md).
 
-The `.windsurfrules` file contains AI configuration for Windsurf.
+### Project status
 
-## Contributing
+- Version: 0.0.1
+- Status: Work in progress (pre‑MVP). Core scaffold is present (Astro 5 + React 19 + Tailwind 4 + shadcn/ui, TypeScript 5, ESLint/Prettier). Backend (Supabase) and AI integration (OpenRouter) will be added as features are implemented per PRD.
 
-Please follow the AI guidelines and coding practices defined in the AI configuration files when contributing to this project.
+### License
 
-## License
-
-MIT
+License: MIT
