@@ -1,0 +1,13 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import GenerateFlashcardsView from "@/components/views/GenerateFlashcardsView";
+
+/**
+ * Strona generowania fiszek - chroniona przez auth middleware
+ * Middleware automatycznie przekierowuje niezalogowanych użytkowników
+ */
+---
+
+<Layout title="Generuj fiszki - 10xCards">
+  <GenerateFlashcardsView client:load />
+</Layout>

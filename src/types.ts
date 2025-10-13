@@ -460,3 +460,48 @@ export type FlashcardUpdate = TablesUpdate<"flashcards">;
  * Typ do aktualizacji oczekującej fiszki w bazie danych
  */
 export type PendingFlashcardUpdate = TablesUpdate<"pending_flashcards">;
+
+// ============================================================================
+// VIEW MODEL TYPES - Typy dla warstwy prezentacji
+// ============================================================================
+
+/**
+ * ViewModel dla wyświetlania informacji o limicie generacji
+ * Przystosowany do bezpośredniego użycia w komponentach UI
+ */
+export interface QuotaViewModel {
+  /** Liczba pozostałych generacji */
+  remaining: number;
+  /** Całkowity dzienny limit */
+  limit: number;
+  /** Procentowe zużycie limitu (0-100), używane przez komponent Progress */
+  percentage: number;
+  /** Sformatowana data resetu limitu do wyświetlenia w UI */
+  resetsAtFormatted: string;
+}
+
+/**
+ * Rozszerzona wersja ErrorResponseDTO z HTTP status code
+ * Używana w hooku do łatwiejszej obsługi błędów
+ */
+export interface ErrorResponseWithStatus extends ErrorResponseDTO {
+  statusCode: number;
+}
+
+/**
+ * ViewModel agregujący cały stan widoku generowania fiszek
+ * Używany w hooku useGenerateFlashcards
+ */
+export interface GenerateFlashcardsStateVM {
+  /** Stan pobierania danych o limicie */
+  quota: {
+    data: QuotaViewModel | null;
+    status: "idle" | "loading" | "error";
+    error: string | null;
+  };
+  /** Stan procesu generowania fiszek */
+  generation: {
+    status: "idle" | "submitting" | "success" | "error";
+    error: ErrorResponseWithStatus | string | null;
+  };
+}
