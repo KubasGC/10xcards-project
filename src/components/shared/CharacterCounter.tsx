@@ -17,12 +17,7 @@ interface CharacterCounterProps {
  * - Ostrzeżenie: blisko przekroczenia limitu (>90%)
  * - Błąd: poniżej minimum lub powyżej maksimum
  */
-export function CharacterCounter({
-  current,
-  max,
-  min,
-  className,
-}: CharacterCounterProps) {
+export function CharacterCounter({ current, max, min, className }: CharacterCounterProps) {
   // Obliczanie procentowego wypełnienia
   const percentage = (current / max) * 100;
 
@@ -44,11 +39,7 @@ export function CharacterCounter({
     : `${current} znaków z maksymalnie ${max}`;
 
   return (
-    <div
-      className={cn("text-sm font-medium", textColor, className)}
-      aria-label={ariaLabel}
-      aria-live="polite"
-    >
+    <div className={cn("text-sm font-medium", textColor, className)} aria-label={ariaLabel} aria-live="polite">
       <span aria-hidden="true">
         {current} / {max}
       </span>

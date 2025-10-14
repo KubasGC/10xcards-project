@@ -1,10 +1,5 @@
 import { Progress } from "@/components/ui/progress";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { InfoIcon } from "lucide-react";
 import type { QuotaViewModel } from "@/types";
 
@@ -21,11 +16,7 @@ interface GenerationQuotaIndicatorProps {
  * Komponent wyświetlający informacje o dziennym limicie generacji fiszek
  * Pokazuje pasek postępu oraz szczegóły w tooltipie
  */
-export function GenerationQuotaIndicator({
-  quota,
-  isLoading,
-  error,
-}: GenerationQuotaIndicatorProps) {
+export function GenerationQuotaIndicator({ quota, isLoading, error }: GenerationQuotaIndicatorProps) {
   // Stan ładowania
   if (isLoading) {
     return (
@@ -44,9 +35,7 @@ export function GenerationQuotaIndicator({
     return (
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-destructive">
-            Błąd pobierania limitu
-          </span>
+          <span className="text-sm font-medium text-destructive">Błąd pobierania limitu</span>
         </div>
         <p className="text-sm text-muted-foreground">{error}</p>
       </div>
@@ -60,11 +49,7 @@ export function GenerationQuotaIndicator({
 
   // Określenie koloru paska postępu na podstawie wykorzystania limitu
   const progressColor =
-    quota.remaining === 0
-      ? "bg-destructive"
-      : quota.percentage > 80
-        ? "bg-orange-500"
-        : "bg-primary";
+    quota.remaining === 0 ? "bg-destructive" : quota.percentage > 80 ? "bg-orange-500" : "bg-primary";
 
   return (
     <div className="space-y-2">
@@ -85,8 +70,7 @@ export function GenerationQuotaIndicator({
               <TooltipContent>
                 <div className="space-y-1 text-sm">
                   <p>
-                    <strong>Pozostało:</strong> {quota.remaining} /{" "}
-                    {quota.limit}
+                    <strong>Pozostało:</strong> {quota.remaining} / {quota.limit}
                   </p>
                   <p>
                     <strong>Reset limitu:</strong> {quota.resetsAtFormatted}
@@ -96,25 +80,18 @@ export function GenerationQuotaIndicator({
             </Tooltip>
           </TooltipProvider>
         </div>
-        <span
-          className={`text-sm font-medium ${quota.remaining === 0 ? "text-destructive" : "text-foreground"}`}
-        >
+        <span className={`text-sm font-medium ${quota.remaining === 0 ? "text-destructive" : "text-foreground"}`}>
           {quota.remaining} / {quota.limit}
         </span>
       </div>
 
       {/* Pasek postępu - odwrócona logika (100% = puste, 0% = pełne) */}
-      <Progress
-        value={100 - quota.percentage}
-        className="h-2"
-        indicatorClassName={progressColor}
-      />
+      <Progress value={100 - quota.percentage} className="h-2" indicatorClassName={progressColor} />
 
       {/* Komunikat o wyczerpaniu limitu */}
       {quota.remaining === 0 && (
         <p className="text-sm text-destructive">
-          Dzienny limit został osiągnięty. Nowe generacje będą dostępne{" "}
-          {quota.resetsAtFormatted}.
+          Dzienny limit został osiągnięty. Nowe generacje będą dostępne {quota.resetsAtFormatted}.
         </p>
       )}
     </div>
