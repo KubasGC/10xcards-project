@@ -21,37 +21,18 @@ const user = Astro.locals.user;
 
       <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center space-x-4">
-        {
-          !user && (
-            <>
-              <a
-                href="#how-it-works"
-                class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
-              >
-                Jak to działa
-              </a>
-              <a
-                href="#features"
-                class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
-              >
-                Funkcje
-              </a>
-              <a href="#faq" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
-                FAQ
-              </a>
-            </>
-          )
-        }
-        {
-          user && (
-            <a
-              href="/generate"
-              class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
-            >
-              Generuj fiszki
-            </a>
-          )
-        }
+        <a
+          href="#how-it-works"
+          class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
+        >
+          Jak to działa
+        </a>
+        <a href="#features" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
+          Funkcje
+        </a>
+        <a href="#faq" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
+          FAQ
+        </a>
       </div>
 
       <!-- Desktop Auth Buttons (Not Logged In) -->
