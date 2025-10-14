@@ -1,21 +1,28 @@
 ---
 import "@/styles/global.css";
+import { ViewTransitions } from "astro:transitions";
 
 interface Props {
   title?: string;
+  description?: string;
 }
 
-const { title = "10x Astro Starter" } = Astro.props;
+const {
+  title = "10xCards - Twórz fiszki 10x szybciej z AI",
+  description = "Generuj wysokiej jakości fiszki z każdego tekstu w sekundach. Ucz się efektywnie dzięki algorytmowi spaced repetition.",
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="pl">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
     <title>{title}</title>
+    <ViewTransitions />
   </head>
   <body>
     <slot />
@@ -23,10 +30,46 @@ const { title = "10x Astro Starter" } = Astro.props;
 </html>
 
 <style>
+  html {
+    scroll-behavior: smooth;
+  }
+
   html,
   body {
     margin: 0;
     width: 100%;
     height: 100%;
+  }
+
+  /* View Transitions animations */
+  @view-transition {
+    navigation: auto;
+  }
+
+  /* Fade in animation for new content */
+  ::view-transition-new(root) {
+    animation: fade-in 0.3s ease-in-out;
+  }
+
+  ::view-transition-old(root) {
+    animation: fade-out 0.3s ease-in-out;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
   }
 </style>

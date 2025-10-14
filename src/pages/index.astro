@@ -1,8 +1,792 @@
 ---
-import Welcome from "../components/Welcome.astro";
 import Layout from "../layouts/Layout.astro";
+import LandingNavigation from "@/components/features/LandingNavigation.astro";
 ---
 
 <Layout>
-  <Welcome />
+  <LandingNavigation />
+
+  <!-- Hero Section -->
+  <section
+    class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16"
+  >
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+          Twórz fiszki
+          <div
+            class="text-6xl sm:text-7xl lg:text-8xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+          >
+            10x szybciej
+          </div>
+          z&nbsp;AI
+        </h1>
+
+        <p class="text-xl sm:text-2xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+          Wklej tekst, wygeneruj wysokiej jakości fiszki w sekundach i zacznij skuteczną naukę z algorytmem spaced
+          repetition.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+          <a
+            href="/register"
+            class="inline-flex items-center justify-center rounded-md text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6"
+          >
+            Zacznij za darmo
+          </a>
+          <a
+            href="#how-it-works"
+            class="inline-flex items-center justify-center rounded-md text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground px-8 py-6"
+          >
+            Zobacz jak działa
+          </a>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center text-sm text-gray-600">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>Darmowy start</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>50 generacji dziennie</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>Bez karty kredytowej</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decorative elements -->
+    <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent"></div>
+  </section>
+
+  <!-- Problem & Solution Section -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-12 items-start">
+          <!-- Problem -->
+          <div class="space-y-6">
+            <div class="inline-block px-4 py-2 bg-red-100 text-red-800 rounded-full text-sm font-semibold">Problem</div>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">Tworzenie fiszek zajmuje zbyt dużo czasu</h2>
+            <div class="space-y-4 text-gray-600">
+              <p class="flex items-start gap-3">
+                <svg
+                  class="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span><strong>Ręczne przepisywanie</strong> każdej fiszki to frustrująca strata czasu</span>
+              </p>
+              <p class="flex items-start gap-3">
+                <svg
+                  class="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span><strong>Niska motywacja</strong> do rozpoczęcia nauki przez wysoką barierę wejścia</span>
+              </p>
+              <p class="flex items-start gap-3">
+                <svg
+                  class="w-6 h-6 text-red-500 flex-shrink-0 mt-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <span><strong>Rozproszone notatki</strong> zamiast uporządkowanych materiałów do nauki</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Solution -->
+          <div class="space-y-6">
+            <div class="inline-block px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
+              Rozwiązanie
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">AI tworzy fiszki za Ciebie w sekundach</h2>
+            <div class="space-y-4 text-gray-600">
+              <p class="flex items-start gap-3">
+                <svg
+                  class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span><strong>Wklej tekst</strong> i otrzymaj gotowe fiszki wysokiej jakości</span>
+              </p>
+              <p class="flex items-start gap-3">
+                <svg
+                  class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span><strong>Zacznij naukę natychmiast</strong> dzięki zintegrowanemu algorytmowi powtórek</span>
+              </p>
+              <p class="flex items-start gap-3">
+                <svg
+                  class="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span><strong>Automatyczne organizowanie</strong> fiszek w tematyczne zestawy</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA centered below both columns -->
+        <div class="text-center mt-12">
+          <a
+            href="/register"
+            class="inline-flex items-center justify-center rounded-md text-base font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3"
+          >
+            Spróbuj za darmo
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section id="how-it-works" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Jak to działa?</h2>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Zacznij tworzyć i uczyć się z fiszek w zaledwie 3 prostych krokach
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Step 1 -->
+          <div class="relative">
+            <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+              <div
+                class="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg"
+              >
+                1
+              </div>
+              <div class="mb-6 mt-4">
+                <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-3">Wklej tekst</h3>
+              <p class="text-gray-600">
+                Wklej dowolny tekst: notatki, artykuł, fragmenty książki. Możesz dodać opcjonalną wskazówkę dla AI.
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="relative">
+            <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+              <div
+                class="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg"
+              >
+                2
+              </div>
+              <div class="mb-6 mt-4">
+                <div class="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center">
+                  <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-3">AI generuje fiszki</h3>
+              <p class="text-gray-600">
+                W kilka sekund otrzymujesz wysokiej jakości fiszki. Możesz je edytować, zaakceptować lub odrzucić.
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="relative">
+            <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+              <div
+                class="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg"
+              >
+                3
+              </div>
+              <div class="mb-6 mt-4">
+                <div class="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center">
+                  <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-3">Zacznij naukę</h3>
+              <p class="text-gray-600">
+                Rozpocznij sesję nauki. Algorytm spaced repetition zadba o optymalne powtórki w czasie.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-12">
+          <a
+            href="/register"
+            class="inline-flex items-center justify-center rounded-md text-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-4"
+          >
+            Rozpocznij teraz
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Features Section -->
+  <section id="features" class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            Wszystko czego potrzebujesz do efektywnej nauki
+          </h2>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">Potężne funkcje w prostym, intuicyjnym interfejsie</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Feature 1: AI Generation -->
+          <div
+            class="group p-8 rounded-2xl border-2 border-gray-200 hover:border-blue-500 hover:shadow-lg transition-all"
+          >
+            <div
+              class="w-14 h-14 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
+            >
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Generowanie AI</h3>
+            <p class="text-gray-600">
+              Zaawansowane modele AI tworzą wysokiej jakości fiszki z każdego tekstu. Wystarczy wkleić i wygenerować.
+            </p>
+          </div>
+
+          <!-- Feature 2: Smart Limits -->
+          <div
+            class="group p-8 rounded-2xl border-2 border-gray-200 hover:border-blue-500 hover:shadow-lg transition-all"
+          >
+            <div
+              class="w-14 h-14 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
+            >
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">50 generacji dziennie</h3>
+            <p class="text-gray-600">
+              Hojny dzienny limit wystarczy na setki fiszek. Reset każdej nocy o północy. Bez dodatkowych opłat.
+            </p>
+          </div>
+
+          <!-- Feature 3: Spaced Repetition -->
+          <div
+            class="group p-8 rounded-2xl border-2 border-gray-200 hover:border-blue-500 hover:shadow-lg transition-all"
+          >
+            <div
+              class="w-14 h-14 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
+            >
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Spaced Repetition</h3>
+            <p class="text-gray-600">
+              Sprawdzony algorytm powtórek optymalizuje harmonogram nauki dla maksymalnego zapamiętywania.
+            </p>
+          </div>
+
+          <!-- Feature 4: Edit & Organize -->
+          <div
+            class="group p-8 rounded-2xl border-2 border-gray-200 hover:border-blue-500 hover:shadow-lg transition-all"
+          >
+            <div
+              class="w-14 h-14 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
+            >
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Edycja i organizacja</h3>
+            <p class="text-gray-600">
+              Pełna kontrola nad fiszkami: edytuj, organizuj w zestawy, akceptuj lub odrzucaj kandydatów AI.
+            </p>
+          </div>
+
+          <!-- Feature 5: Privacy First -->
+          <div
+            class="group p-8 rounded-2xl border-2 border-gray-200 hover:border-blue-500 hover:shadow-lg transition-all"
+          >
+            <div
+              class="w-14 h-14 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
+            >
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Prywatność danych</h3>
+            <p class="text-gray-600">
+              Twoje teksty źródłowe nie są przechowywane. Zapisujemy tylko zaakceptowane przez Ciebie fiszki.
+            </p>
+          </div>
+
+          <!-- Feature 6: Manual Creation -->
+          <div
+            class="group p-8 rounded-2xl border-2 border-gray-200 hover:border-blue-500 hover:shadow-lg transition-all"
+          >
+            <div
+              class="w-14 h-14 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
+            >
+              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Tworzenie manualne</h3>
+            <p class="text-gray-600">
+              Preferujesz ręczne tworzenie? Żaden problem. Twórz własne fiszki z licznikami znaków i walidacją.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof / Testimonials Section (MVP Placeholder) -->
+  <section class="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            Dołącz do uczących się efektywniej
+          </h2>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">Sprawdź, jak 10xCards zmienia sposób nauki</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Testimonial 1 -->
+          <div class="bg-white rounded-2xl p-8 shadow-lg">
+            <div class="flex items-center gap-1 mb-4">
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+            </div>
+            <p class="text-gray-700 mb-6 italic">
+              "Tworzenie fiszek z moich notatek nigdy nie było tak proste. AI generuje świetne pytania, a ja tylko
+              akceptuję i uczę się."
+            </p>
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold"
+              >
+                AK
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900">Anna Kowalska</p>
+                <p class="text-sm text-gray-600">Studentka medycyny</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 2 -->
+          <div class="bg-white rounded-2xl p-8 shadow-lg">
+            <div class="flex items-center gap-1 mb-4">
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+            </div>
+            <p class="text-gray-700 mb-6 italic">
+              "50 generacji dziennie to mnóstwo. Wklejam artykuły, które czytam i mam gotowe fiszki do nauki. Oszczędzam
+              godziny."
+            </p>
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold"
+              >
+                MN
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900">Michał Nowak</p>
+                <p class="text-sm text-gray-600">Developer</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 3 -->
+          <div class="bg-white rounded-2xl p-8 shadow-lg">
+            <div class="flex items-center gap-1 mb-4">
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+            </div>
+            <p class="text-gray-700 mb-6 italic">
+              "Algorytm spaced repetition działa świetnie. Widzę, że rzeczywiście lepiej zapamiętuję materiał niż przy
+              zwykłej nauce."
+            </p>
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold"
+              >
+                JW
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900">Joanna Wiśniewska</p>
+                <p class="text-sm text-gray-600">Nauczycielka</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Najczęściej zadawane pytania</h2>
+          <p class="text-xl text-gray-600">Wszystko, co musisz wiedzieć o 10xCards</p>
+        </div>
+
+        <div class="space-y-6">
+          <!-- FAQ Item 1 -->
+          <details class="group bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors">
+            <summary class="flex items-center justify-between cursor-pointer list-none">
+              <h3 class="text-lg font-semibold text-gray-900 pr-8">Czy 10xCards jest darmowy?</h3>
+              <svg
+                class="w-6 h-6 text-gray-600 group-open:rotate-180 transition-transform flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </summary>
+            <p class="mt-4 text-gray-600 leading-relaxed">
+              Tak! 10xCards oferuje darmowy start bez konieczności podawania karty kredytowej. Otrzymujesz 50 generacji
+              AI dziennie, co wystarczy na stworzenie setek fiszek każdego dnia.
+            </p>
+          </details>
+
+          <!-- FAQ Item 2 -->
+          <details class="group bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors">
+            <summary class="flex items-center justify-between cursor-pointer list-none">
+              <h3 class="text-lg font-semibold text-gray-900 pr-8">Jak działa limit 50 generacji dziennie?</h3>
+              <svg
+                class="w-6 h-6 text-gray-600 group-open:rotate-180 transition-transform flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </summary>
+            <p class="mt-4 text-gray-600 leading-relaxed">
+              Każdego dnia otrzymujesz 50 możliwości wygenerowania fiszek przez AI. Jedna generacja może utworzyć wiele
+              fiszek naraz (np. 10-20 z jednego tekstu). Limit resetuje się o północy. Jeśli wykorzystasz limit, możesz
+              nadal tworzyć fiszki manualnie.
+            </p>
+          </details>
+
+          <!-- FAQ Item 3 -->
+          <details class="group bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors">
+            <summary class="flex items-center justify-between cursor-pointer list-none">
+              <h3 class="text-lg font-semibold text-gray-900 pr-8">Czy moje dane są bezpieczne?</h3>
+              <svg
+                class="w-6 h-6 text-gray-600 group-open:rotate-180 transition-transform flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </summary>
+            <p class="mt-4 text-gray-600 leading-relaxed">
+              Absolutnie. Nie przechowujemy wklejanych przez Ciebie tekstów źródłowych. Zapisujemy tylko zaakceptowane
+              fiszki. Twoje dane są chronione i nigdy nie będą udostępniane osobom trzecim.
+            </p>
+          </details>
+
+          <!-- FAQ Item 4 -->
+          <details class="group bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors">
+            <summary class="flex items-center justify-between cursor-pointer list-none">
+              <h3 class="text-lg font-semibold text-gray-900 pr-8">Czym jest spaced repetition?</h3>
+              <svg
+                class="w-6 h-6 text-gray-600 group-open:rotate-180 transition-transform flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </summary>
+            <p class="mt-4 text-gray-600 leading-relaxed">
+              Spaced repetition to naukowo potwierdzona metoda nauki, która optymalizuje harmonogram powtórek. Algorytm
+              pokazuje Ci fiszki dokładnie wtedy, gdy jesteś bliski zapomnienia - co maksymalizuje zapamiętywanie przy
+              minimalnym wysiłku.
+            </p>
+          </details>
+
+          <!-- FAQ Item 5 -->
+          <details class="group bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors">
+            <summary class="flex items-center justify-between cursor-pointer list-none">
+              <h3 class="text-lg font-semibold text-gray-900 pr-8">Czy mogę edytować fiszki wygenerowane przez AI?</h3>
+              <svg
+                class="w-6 h-6 text-gray-600 group-open:rotate-180 transition-transform flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </summary>
+            <p class="mt-4 text-gray-600 leading-relaxed">
+              Oczywiście! Masz pełną kontrolę nad każdą fiszką. Możesz edytować kandydatów przed akceptacją, a także
+              modyfikować już zaakceptowane fiszki w dowolnym momencie. AI to tylko pomoc - decyzje należą do Ciebie.
+            </p>
+          </details>
+
+          <!-- FAQ Item 6 -->
+          <details class="group bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors">
+            <summary class="flex items-center justify-between cursor-pointer list-none">
+              <h3 class="text-lg font-semibold text-gray-900 pr-8">Jak szybko mogę zacząć?</h3>
+              <svg
+                class="w-6 h-6 text-gray-600 group-open:rotate-180 transition-transform flex-shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </summary>
+            <p class="mt-4 text-gray-600 leading-relaxed">
+              Natychmiast! Wystarczy zarejestrować się (email + hasło), wkleić tekst i kliknąć generuj. W kilka sekund
+              masz gotowe fiszki do nauki. Cały proces od rejestracji do pierwszej sesji nauki zajmuje mniej niż 5
+              minut.
+            </p>
+          </details>
+        </div>
+
+        <div class="text-center mt-12">
+          <p class="text-gray-600 mb-4">Chcesz przekonać się, jakie to proste?</p>
+          <a
+            href="/register"
+            class="inline-flex items-center justify-center rounded-md text-base font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3"
+          >
+            Wypróbuj za darmo
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 py-12">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-4 gap-8 mb-8">
+          <!-- Brand -->
+          <div class="md:col-span-2">
+            <a href="/" class="inline-block mb-4">
+              <span
+                class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
+              >
+                10xCards
+              </span>
+            </a>
+            <p class="text-gray-400 mb-4 max-w-sm">
+              Twórz fiszki 10x szybciej z AI i ucz się efektywnie dzięki algorytmowi spaced repetition.
+            </p>
+          </div>
+
+          <!-- Product -->
+          <div>
+            <h3 class="font-semibold text-white mb-4">Produkt</h3>
+            <ul class="space-y-2">
+              <li>
+                <a href="#features" class="hover:text-white transition-colors">Funkcje</a>
+              </li>
+              <li>
+                <a href="#how-it-works" class="hover:text-white transition-colors">Jak to działa</a>
+              </li>
+              <li>
+                <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Account -->
+          <div>
+            <h3 class="font-semibold text-white mb-4">Konto</h3>
+            <ul class="space-y-2">
+              <li>
+                <a href="/login" class="hover:text-white transition-colors">Zaloguj się</a>
+              </li>
+              <li>
+                <a href="/register" class="hover:text-white transition-colors">Zarejestruj się</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="border-t border-gray-800 pt-8">
+          <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-gray-400 text-sm">© 2025 10xCards. Wszystkie prawa zastrzeżone.</p>
+            <div class="flex gap-6 text-sm">
+              <a href="/privacy" class="hover:text-white transition-colors">Polityka prywatności</a>
+              <a href="/terms" class="hover:text-white transition-colors">Regulamin</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Final CTA in Footer -->
+        <div class="mt-8">
+          <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 sm:p-8 text-center">
+            <h3 class="text-xl sm:text-2xl font-bold text-white mb-3">Zacznij tworzyć fiszki w sekundach</h3>
+            <p class="text-blue-100 mb-6 text-sm sm:text-base">
+              Darmowy start. Bez karty kredytowej. 50 generacji dziennie.
+            </p>
+            <a
+              href="/register"
+              class="inline-flex items-center justify-center rounded-md text-base font-medium transition-colors bg-white text-gray-900 hover:bg-gray-100 px-8 py-3 w-full sm:w-auto"
+            >
+              Rozpocznij za darmo
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 </Layout>
