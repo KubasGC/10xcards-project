@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import LandingNavigation from "@/components/features/LandingNavigation.astro";
+import AnimatedHeroBackground from "@/components/features/AnimatedHeroBackground.tsx";
 ---
 
 <Layout>
@@ -8,8 +9,10 @@ import LandingNavigation from "@/components/features/LandingNavigation.astro";
 
   <!-- Hero Section -->
   <section
-    class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16"
+    class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16 overflow-hidden"
   >
+    <!-- Animated Background -->
+    <AnimatedHeroBackground client:load />
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
       <div class="max-w-4xl mx-auto text-center">
         <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
