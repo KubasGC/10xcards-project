@@ -1,0 +1,37 @@
+---
+// logout.astro - Obsługa wylogowania użytkownika
+// Ten plik zastępuje poprzedni endpoint API /api/v1/auth/logout
+
+// Sprawdź czy to jest POST request (formularz wysyła POST)
+if (Astro.request.method === 'POST') {
+  try {
+    // Pobierz klienta Supabase z locals (ustawiony przez middleware)
+    const supabase = Astro.locals.supabase;
+
+    // Wykonaj wylogowanie
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      // eslint-disable-next-line no-console
+      console.error("Logout error:", error);
+
+      // W przypadku błędu przekieruj na stronę główną z błędem
+      // Możemy użyć query param do przekazania informacji o błędzie
+      return Astro.redirect('/?error=logout_failed');
+    }
+
+    // Pomyślne wylogowanie - przekieruj na stronę główną
+    return Astro.redirect('/');
+
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Unexpected logout error:", error);
+
+    // W przypadku nieoczekiwanego błędu też przekieruj na stronę główną
+    return Astro.redirect('/?error=logout_error');
+  }
+}
+
+// Jeśli to nie jest POST request, przekieruj na stronę główną
+return Astro.redirect('/');
+---

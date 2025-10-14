@@ -91,7 +91,7 @@ export function MobileMenu({ isAuthenticated = false }: MobileMenuProps) {
                   >
                     Generuj
                   </a>
-                  <form method="POST" action="/api/v1/auth/logout">
+                  <form method="POST" action="/logout">
                     <button
                       type="submit"
                       className="block w-full text-center px-4 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100"

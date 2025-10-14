@@ -60,7 +60,7 @@ Endpointy będą zlokalizowane w `src/pages/api/v1/auth`:
   - Przyjmuje `email` i `password`.
   - Wykorzystuje `supabase.auth.signInWithPassword()` do zalogowania użytkownika.
   - Zwraca sesję w przypadku sukcesu lub błąd.
-- `src/pages/api/v1/auth/logout.ts` (POST):
+- `src/pages/logout.astro`:
   - Wykorzystuje `supabase.auth.signOut()` do unieważnienia sesji.
   - Usuwa cookie sesji i przekierowuje na stronę główną.
 

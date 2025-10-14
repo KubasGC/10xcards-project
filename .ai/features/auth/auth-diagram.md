@@ -71,7 +71,7 @@ Użytkownik → Logout → API /logout → Supabase Auth → Usunięcie cookies 
 ### 4. Przepływ wylogowania
 
 1. Użytkownik klika przycisk "Wyloguj" w nawigacji
-2. Wysyłany jest POST do `/api/v1/auth/logout`
+2. Wysyłany jest POST do `/logout`
 3. Endpoint wywołuje `supabase.auth.signOut()`
 4. Supabase unieważnia sesję i usuwa cookies
 5. Użytkownik zostaje przekierowany na stronę główną
@@ -147,8 +147,8 @@ flowchart TD
     COOKIES --> REDIR_GEN[Przekieruj na /generate<br/>po rejestracji/logowaniu]
 
     %% Wylogowanie
-    U -->|Kliknięcie Wyloguj| LOGOUT[Logout Form<br/>POST /api/v1/auth/logout]
-    LOGOUT --> ALO[API Logout<br/>logout.ts]
+    U -->|Kliknięcie Wyloguj| LOGOUT[Logout Form<br/>POST /logout]
+    LOGOUT --> ALO[API Logout<br/>logout.astro]
     ALO -->|supabase.auth.signOut| SAO[Supabase Auth<br/>signOut]
     SAO --> CLR[Usuń cookies<br/>sesji]
     CLR --> REDIR_ROOT[Przekieruj na /]
