@@ -40,7 +40,7 @@ export default function GenerateFlashcardsView() {
       const error = state.generation.error;
 
       // Jeśli błąd to obiekt ErrorResponseDTO
-      if (typeof error === "object" && "statusCode" in error) {
+      if (typeof error === "object" && error !== null && "statusCode" in error) {
         switch (error.statusCode) {
           case 429:
             toast.error("Limit generacji został osiągnięty", {
