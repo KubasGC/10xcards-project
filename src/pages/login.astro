@@ -1,0 +1,49 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { LoginForm } from "@/components/features/auth/LoginForm";
+---
+
+<Layout title="Zaloguj się - 10xCards">
+  <div
+    class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 px-4 sm:px-6 lg:px-8"
+  >
+    <div class="w-full max-w-md">
+      {/* Logo/Brand */}
+      <div class="text-center mb-8">
+        <a href="/" class="inline-block">
+          <span class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            10xCards
+          </span>
+        </a>
+      </div>
+
+      {/* Login Form */}
+      <LoginForm client:load />
+
+      {/* Additional Info */}
+      <div class="mt-8 text-center">
+        <p class="text-sm text-gray-600">Logując się, zyskujesz dostęp do:</p>
+        <div class="mt-4 grid grid-cols-1 gap-2 text-sm text-gray-700">
+          <div class="flex items-center justify-center gap-2">
+            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>50 generacji AI dziennie</span>
+          </div>
+          <div class="flex items-center justify-center gap-2">
+            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>Nielimitowane tworzenie fiszek</span>
+          </div>
+          <div class="flex items-center justify-center gap-2">
+            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>Dostęp do spaced repetition</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

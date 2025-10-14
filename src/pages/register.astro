@@ -1,0 +1,102 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { RegisterForm } from "@/components/features/auth/RegisterForm";
+---
+
+<Layout title="Zarejestruj się - 10xCards">
+  <div
+    class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 px-4 sm:px-6 lg:px-8"
+  >
+    <div class="w-full max-w-md">
+      {/* Logo/Brand */}
+      <div class="text-center mb-8">
+        <a href="/" class="inline-block">
+          <span class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            10xCards
+          </span>
+        </a>
+      </div>
+
+      {/* Register Form */}
+      <RegisterForm client:load />
+
+      {/* Benefits Section */}
+      <div class="mt-8">
+        <div class="bg-white/80 backdrop-blur-sm rounded-xl p-6 border border-gray-200">
+          <h3 class="text-sm font-semibold text-gray-900 mb-3 text-center">
+            Dołącz do tysięcy uczących się efektywniej
+          </h3>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <div
+                class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0"
+              >
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"
+                  ></path>
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-900">AI generuje fiszki za Ciebie</p>
+                <p class="text-xs text-gray-600">Wklej tekst i otrzymaj gotowe fiszki w sekundach</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div
+                class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0"
+              >
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  ></path>
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-900">Spaced repetition</p>
+                <p class="text-xs text-gray-600">Naucz się efektywnie dzięki algorytmowi powtórek</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div
+                class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0"
+              >
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  ></path>
+                </svg>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-900">Prywatność i bezpieczeństwo</p>
+                <p class="text-xs text-gray-600">Twoje dane są chronione i nigdy nie będą udostępniane</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Trust indicators */}
+      <div class="mt-6 text-center">
+        <div
+          class="inline-flex items-center gap-2 text-xs text-gray-600 bg-white/80 px-4 py-2 rounded-full border border-gray-200"
+        >
+          <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+              clip-rule="evenodd"></path>
+          </svg>
+          <span>Bezpieczne szyfrowanie danych</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
