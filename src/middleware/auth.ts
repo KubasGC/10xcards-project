@@ -31,7 +31,9 @@ export const authMiddleware = defineMiddleware(async (context, next) => {
     }
 
     // Użytkownik jest zalogowany, kontynuuj
+    context.locals.session = session;
     return next();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     // W przypadku błędu, przekieruj na stronę główną
     return Response.redirect(new URL("/", context.url), 302);
