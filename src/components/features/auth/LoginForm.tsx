@@ -47,21 +47,21 @@ export function LoginForm() {
     setIsLoading(true);
 
     try {
-      // TODO: Implement actual login logic with Supabase
-      // const response = await fetch('/api/v1/auth/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password })
-      // });
+      const response = await fetch("/api/v1/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-      // if (!response.ok) {
-      //   const data = await response.json();
-      //   throw new Error(data.error || 'Błąd logowania');
-      // }
+      const data = await response.json();
 
-      // window.location.href = '/generate';
+      if (!response.ok) {
+        // Handle general error
+        throw new Error(data?.error?.message || "Błąd logowania");
+      }
 
-      console.log("Login attempt:", { email, password });
+      // Success - redirect to generate page
+      window.location.href = "/generate";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Wystąpił nieoczekiwany błąd");
     } finally {

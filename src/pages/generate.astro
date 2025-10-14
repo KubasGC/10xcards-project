@@ -1,6 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import GenerateFlashcardsView from "@/components/views/GenerateFlashcardsView";
+import NavBar from "@/components/features/NavBar.astro";
 
 /**
  * Strona generowania fiszek - chroniona przez auth middleware
@@ -9,5 +10,6 @@ import GenerateFlashcardsView from "@/components/views/GenerateFlashcardsView";
 ---
 
 <Layout title="Generuj fiszki - 10xCards">
+  <NavBar />
   <GenerateFlashcardsView client:load />
 </Layout>

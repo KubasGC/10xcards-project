@@ -87,7 +87,7 @@ export default function GenerateFlashcardsView() {
 
   return (
     <>
-      <div className="container max-w-4xl mx-auto py-8 px-4">
+      <div className="container max-w-4xl mx-auto pt-20 py-8 px-4">
         <div className="space-y-8">
           {/* Header */}
           <div className="space-y-2">

@@ -1,13 +1,11 @@
 ---
 import { MobileMenu } from "./MobileMenu";
 
-// TODO: When backend is ready, get session from Astro.locals.session
-// For now, this is just UI structure that will be connected later
-const session = null; // Will be: Astro.locals.session
-const user = session ? { email: "user@example.com" } : null;
+// Get user from Astro.locals (set by auth middleware)
+const user = Astro.locals.user;
 ---
 
-<nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+<nav class="fixed top-0 left-0 right-0 z-[100] bg-white/80 backdrop-blur-md border-b border-gray-200">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <!-- Logo -->
@@ -16,7 +14,7 @@ const user = session ? { email: "user@example.com" } : null;
           <span
             class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
           >
-            10xCards
+            fiszkuj.pl
           </span>
         </a>
       </div>
