@@ -2,3 +2,6 @@ name = "10xcards"
 compatibility_flags = [ "nodejs_compat" ]
 compatibility_date = "2025-10-14"
 pages_build_output_dir = "dist"
+
+[vars]
+OPENROUTER_MODEL = "google/gemini-2.5-flash-lite"
