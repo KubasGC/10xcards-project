@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Flashcard {
   x: number;
@@ -19,6 +19,7 @@ const AnimatedHeroBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | undefined>(undefined);
   const flashcardsRef = useRef<Flashcard[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -106,7 +107,6 @@ const AnimatedHeroBackground = () => {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-
       flashcardsRef.current.forEach((card) => {
         // Update position
         card.x += card.vx;
@@ -165,6 +165,9 @@ const AnimatedHeroBackground = () => {
 
     animate();
 
+    // Make canvas visible after first render
+    setIsVisible(true);
+
     return () => {
       window.removeEventListener("resize", resizeCanvas);
       if (animationRef.current) {
@@ -176,8 +179,11 @@ const AnimatedHeroBackground = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ mixBlendMode: "multiply" }}
+      className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-1000"
+      style={{
+        mixBlendMode: "multiply",
+        opacity: isVisible ? 1 : 0,
+      }}
     />
   );
 };
