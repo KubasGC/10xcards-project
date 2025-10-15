@@ -20,20 +20,45 @@ const user = Astro.locals.user;
       </div>
 
       <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center space-x-4">
-        <a
-          href="#how-it-works"
-          class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
-        >
-          Jak to działa
-        </a>
-        <a href="#features" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
-          Funkcje
-        </a>
-        <a href="#faq" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
-          FAQ
-        </a>
-      </div>
+      {
+        user ? (
+          <div class="hidden md:flex items-center space-x-4">
+            <a
+              href="/dashboard"
+              class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
+            >
+              Dashboard
+            </a>
+            <a
+              href="/generate"
+              class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
+            >
+              Generuj fiszki
+            </a>
+            <a
+              href="/pending"
+              class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
+            >
+              Oczekujące fiszki
+            </a>
+          </div>
+        ) : (
+          <div class="hidden md:flex items-center space-x-4">
+            <a
+              href="#how-it-works"
+              class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
+            >
+              Jak to działa
+            </a>
+            <a href="#features" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
+              Funkcje
+            </a>
+            <a href="#faq" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">
+              FAQ
+            </a>
+          </div>
+        )
+      }
 
       <!-- Desktop Auth Buttons (Not Logged In) -->
       {
@@ -59,15 +84,17 @@ const user = Astro.locals.user;
       {
         user && (
           <div class="hidden md:flex items-center space-x-3">
-            <a
-              href="/generate"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
-            >
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            <div class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
               </svg>
-              Generuj
-            </a>
+              <span class="font-medium">{user.email}</span>
+            </div>
             <form method="POST" action="/logout" class="inline">
               <button
                 type="submit"

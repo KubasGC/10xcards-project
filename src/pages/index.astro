@@ -2,6 +2,11 @@
 import Layout from "../layouts/Layout.astro";
 import NavBar from "@/components/features/NavBar.astro";
 import AnimatedHeroBackground from "@/components/features/AnimatedHeroBackground.tsx";
+
+// Redirect authenticated users to dashboard
+if (Astro.locals.user) {
+  return Astro.redirect("/dashboard");
+}
 ---
 
 <Layout>
