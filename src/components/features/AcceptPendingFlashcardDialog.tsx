@@ -47,6 +47,10 @@ interface AcceptPendingFlashcardDialogProps {
   isSubmitting: boolean;
   /** Callback wywoływany przy akceptacji fiszki */
   onAccept: (id: string, command: AcceptPendingFlashcardCommand) => void;
+  /** Czy jesteśmy w trybie bulk (masowej akceptacji) */
+  isBulkMode?: boolean;
+  /** Liczba fiszek do zaakceptowania w trybie bulk */
+  bulkCount?: number;
 }
 
 /**
@@ -61,6 +65,8 @@ export function AcceptPendingFlashcardDialog({
   isLoadingSets,
   isSubmitting,
   onAccept,
+  isBulkMode = false,
+  bulkCount = 1,
 }: AcceptPendingFlashcardDialogProps) {
   // Stan wyboru: "existing" lub "new"
   const [selectionMode, setSelectionMode] = useState<"existing" | "new">("existing");
@@ -135,25 +141,40 @@ export function AcceptPendingFlashcardDialog({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Zaakceptuj fiszkę</DialogTitle>
+          <DialogTitle>
+            {isBulkMode ? `Zaakceptuj ${bulkCount} fiszek` : "Zaakceptuj fiszkę"}
+          </DialogTitle>
           <DialogDescription>
-            Wybierz istniejący zestaw lub utwórz nowy, aby dodać tę fiszkę do swojej kolekcji.
+            {isBulkMode
+              ? `Wybierz istniejący zestaw lub utwórz nowy, aby dodać ${bulkCount} zaznaczonych fiszek do swojej kolekcji.`
+              : "Wybierz istniejący zestaw lub utwórz nowy, aby dodać tę fiszkę do swojej kolekcji."}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Podgląd fiszki */}
-          <div className="rounded-lg border bg-muted/50 p-4">
-            <h4 className="mb-2 font-medium text-sm">Podgląd fiszki:</h4>
-            <div className="space-y-2 text-sm">
-              <div>
-                <span className="font-medium">Przód:</span> {flashcard?.front_draft}
-              </div>
-              <div>
-                <span className="font-medium">Tył:</span> {flashcard?.back_draft}
+          {!isBulkMode && (
+            <div className="rounded-lg border bg-muted/50 p-4">
+              <h4 className="mb-2 font-medium text-sm">Podgląd fiszki:</h4>
+              <div className="space-y-2 text-sm">
+                <div>
+                  <span className="font-medium">Przód:</span> {flashcard?.front_draft}
+                </div>
+                <div>
+                  <span className="font-medium">Tył:</span> {flashcard?.back_draft}
+                </div>
               </div>
             </div>
-          </div>
+          )}
+          
+          {/* Info o liczbie fiszek w trybie bulk */}
+          {isBulkMode && (
+            <div className="rounded-lg border bg-primary/10 p-4">
+              <p className="text-sm text-foreground">
+                Wszystkie <span className="font-semibold">{bulkCount} zaznaczone fiszki</span> zostaną dodane do wybranego zestawu.
+              </p>
+            </div>
+          )}
 
           {/* Wybór trybu */}
           <div className="space-y-4">
@@ -260,6 +281,8 @@ export function AcceptPendingFlashcardDialog({
                 <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
                 Dodawanie...
               </>
+            ) : isBulkMode ? (
+              `Zaakceptuj ${bulkCount} fiszek`
             ) : (
               "Zaakceptuj fiszkę"
             )}

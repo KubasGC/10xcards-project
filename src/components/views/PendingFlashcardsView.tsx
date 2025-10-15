@@ -15,7 +15,8 @@ import type { PendingFlashcardDTO, UpdatePendingFlashcardCommand, AcceptPendingF
  */
 export default function PendingFlashcardsView() {
   // Użyj hooka do zarządzania stanem i API
-  const { state, editFlashcard, acceptFlashcard, rejectFlashcard, clearError } = usePendingFlashcards();
+  const { state, editFlashcard, acceptFlashcard, rejectFlashcard, clearError, fetchPendingFlashcards, fetchSets } =
+    usePendingFlashcards();
 
   // Stan dla modala edycji
   const [editDialogState, setEditDialogState] = useState<{
@@ -30,9 +31,11 @@ export default function PendingFlashcardsView() {
   const [acceptDialogState, setAcceptDialogState] = useState<{
     isOpen: boolean;
     flashcard: PendingFlashcardDTO | null;
+    isBulkMode: boolean;
   }>({
     isOpen: false,
     flashcard: null,
+    isBulkMode: false,
   });
 
   // Stan dla zaznaczania fiszek (masowe akcje)
@@ -83,6 +86,7 @@ export default function PendingFlashcardsView() {
     setAcceptDialogState({
       isOpen: true,
       flashcard,
+      isBulkMode: false,
     });
   };
 
@@ -101,10 +105,33 @@ export default function PendingFlashcardsView() {
    */
   const handleAcceptFlashcardSubmit = async (id: string, command: AcceptPendingFlashcardCommand) => {
     try {
-      await acceptFlashcard(id, command);
-      toast.success("Fiszka została zaakceptowana!", {
-        description: "Fiszka została dodana do wybranego zestawu.",
-      });
+      // Jeśli jesteśmy w trybie bulk, akceptuj wszystkie zaznaczone fiszki
+      if (acceptDialogState.isBulkMode) {
+        const flashcardsToAccept = Array.from(selectedFlashcards);
+        const acceptPromises = flashcardsToAccept.map((flashcardId) => acceptFlashcard(flashcardId, command));
+
+        await Promise.all(acceptPromises);
+
+        toast.success(`${flashcardsToAccept.length} fiszek zostało zaakceptowanych!`, {
+          description: "Fiszki zostały dodane do wybranego zestawu.",
+        });
+
+        // Ponownie pobierz dane po bulk accept
+        await Promise.all([fetchPendingFlashcards(), fetchSets()]);
+
+        setSelectedFlashcards(new Set());
+        setSelectionMode(false);
+      } else {
+        // Tryb pojedynczej akceptacji
+        await acceptFlashcard(id, command);
+        toast.success("Fiszka została zaakceptowana!", {
+          description: "Fiszka została dodana do wybranego zestawu.",
+        });
+
+        // Ponownie pobierz dane po pojedynczej akceptacji
+        await Promise.all([fetchPendingFlashcards(), fetchSets()]);
+      }
+
       handleCloseAcceptDialog();
     } catch {
       toast.error("Błąd akceptacji", {
@@ -180,6 +207,7 @@ export default function PendingFlashcardsView() {
       setAcceptDialogState({
         isOpen: true,
         flashcard: firstSelectedCard,
+        isBulkMode: true,
       });
     }
   };
@@ -194,15 +222,17 @@ export default function PendingFlashcardsView() {
     if (window.confirm(`Czy na pewno chcesz odrzucić ${count} zaznaczonych fiszek? Ta akcja jest nieodwracalna.`)) {
       const rejectPromises = Array.from(selectedFlashcards).map((id) =>
         rejectFlashcard(id).catch(() => {
-          // Kontynuuj nawet jeśli jeden odrzut się nie uda
-          console.error(`Failed to reject flashcard ${id}`);
+          // Kontynuuj nawet jeśli jeden odrzut się nie uda - błąd zostanie obsłużony w hook'u
         })
       );
 
-      Promise.all(rejectPromises).then(() => {
+      Promise.all(rejectPromises).then(async () => {
         toast.success(`${count} fiszek zostało odrzuconych`, {
           description: "Fiszki zostały trwale usunięte.",
         });
+
+        // Ponownie pobierz dane po bulk reject
+        await fetchPendingFlashcards();
 
         setSelectedFlashcards(new Set());
         setSelectionMode(false);
@@ -330,6 +360,8 @@ export default function PendingFlashcardsView() {
         isLoadingSets={state.isLoadingSets}
         isSubmitting={state.isSubmitting}
         onAccept={handleAcceptFlashcardSubmit}
+        isBulkMode={acceptDialogState.isBulkMode}
+        bulkCount={acceptDialogState.isBulkMode ? selectedFlashcards.size : undefined}
       />
 
       {/* Toast notifications */}

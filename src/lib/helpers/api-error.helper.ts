@@ -69,6 +69,22 @@ export function error401(message = "Unauthorized - authentication required"): {
 }
 
 /**
+ * Creates a 404 Not Found error response
+ *
+ * @param message - User-friendly error message
+ * @returns 404 error response
+ */
+export function error404(message = "Resource not found"): {
+  status: number;
+  body: ErrorResponseDTO;
+} {
+  return {
+    status: 404,
+    body: createErrorResponse(404, "NOT_FOUND", message),
+  };
+}
+
+/**
  * Creates a 429 Too Many Requests error response
  *
  * @param message - User-friendly error message

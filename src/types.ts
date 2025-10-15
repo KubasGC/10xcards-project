@@ -355,6 +355,7 @@ export type ErrorCode =
   | "UNAUTHORIZED"
   | "FORBIDDEN"
   | "VALIDATION_ERROR"
+  | "NOT_FOUND"
   | "RESOURCE_NOT_FOUND"
   | "SET_NOT_FOUND"
   | "DUPLICATE_SET_NAME"
