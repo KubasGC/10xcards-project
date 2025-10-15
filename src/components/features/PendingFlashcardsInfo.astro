@@ -1,0 +1,35 @@
+---
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
+interface Props {
+  pendingCount: number;
+  error?: string | null;
+}
+
+const { pendingCount, error } = Astro.props;
+---
+
+{
+  // Don't render if error or no pending flashcards
+  !error && pendingCount > 0 && (
+    <Card className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950/50 max-w-4xl mx-auto">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-blue-900 dark:text-blue-100">Oczekujące fiszki</CardTitle>
+        <CardDescription className="text-blue-700 dark:text-blue-300">
+          Istnieje {pendingCount} wygenerowanych fiszek oczekujących na akceptację
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="pt-0">
+        <a href="/pending">
+          <Button
+            variant="outline"
+            className="border-blue-300 text-blue-700 hover:bg-blue-100 dark:border-blue-700 dark:text-blue-300 dark:hover:bg-blue-900/50"
+          >
+            Przejrzyj oczekujące fiszki
+          </Button>
+        </a>
+      </CardContent>
+    </Card>
+  )
+}

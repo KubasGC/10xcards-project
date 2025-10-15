@@ -2,19 +2,41 @@
 import Layout from "@/layouts/Layout.astro";
 import GenerateFlashcardsView from "@/components/views/GenerateFlashcardsView";
 import NavBar from "@/components/features/NavBar.astro";
-import PendingFlashcardsInfo from "@/components/features/PendingFlashcardsInfo";
+import PendingFlashcardsInfo from "@/components/features/PendingFlashcardsInfo.astro";
 
 /**
  * Strona generowania fiszek - chroniona przez auth middleware
  * Middleware automatycznie przekierowuje niezalogowanych użytkowników
  */
+const { supabase, user } = Astro.locals;
+
+// Fetch pending flashcards count server-side
+let pendingCount = 0;
+let pendingCountError = null;
+
+try {
+  if (user) {
+    const { count, error } = await supabase
+      .from("pending_flashcards")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", user.id);
+
+    if (error) {
+      pendingCountError = "Nie udało się pobrać liczby oczekujących fiszek";
+    } else {
+      pendingCount = count || 0;
+    }
+  }
+} catch {
+  pendingCountError = "Nie udało się pobrać liczby oczekujących fiszek";
+}
 ---
 
 <Layout title="Generuj fiszki - 10xCards">
   <NavBar />
   <div class="pt-16">
     <div class="container mx-auto px-4 py-6 space-y-6">
-      <PendingFlashcardsInfo client:load />
+      <PendingFlashcardsInfo pendingCount={pendingCount} error={pendingCountError} />
       <GenerateFlashcardsView client:load />
     </div>
   </div>
