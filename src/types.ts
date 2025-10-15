@@ -265,7 +265,7 @@ export interface PaginationDTO {
  */
 export interface PaginatedResponseDTO<T> {
   data: T[];
-  pagination: PaginationDTO;
+  pagination?: PaginationDTO;
 }
 
 /**
