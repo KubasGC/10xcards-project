@@ -1,9 +1,6 @@
 import type { APIRoute } from "astro";
 import { error401, error400, error500, error404 } from "@/lib/helpers/api-error.helper";
-import type {
-  PendingFlashcardDTO,
-  UpdatePendingFlashcardCommand,
-} from "@/types";
+import type { PendingFlashcardDTO, UpdatePendingFlashcardCommand } from "@/types";
 
 /**
  * PATCH /api/v1/pending-flashcards/[id]
@@ -31,7 +28,7 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
     }
 
     // Pobierz body
-    const body = await request.json() as UpdatePendingFlashcardCommand;
+    const body = (await request.json()) as UpdatePendingFlashcardCommand;
 
     // Walidacja: co najmniej jedno pole musi być dostarczone
     if (!body.front_draft && !body.back_draft) {

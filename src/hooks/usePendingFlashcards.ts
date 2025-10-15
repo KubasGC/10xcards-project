@@ -118,9 +118,7 @@ export function usePendingFlashcards() {
       // Aktualizuj lokalny stan
       setState((prev) => ({
         ...prev,
-        pendingFlashcards: prev.pendingFlashcards.map((fc) =>
-          fc.id === id ? updatedFlashcard : fc
-        ),
+        pendingFlashcards: prev.pendingFlashcards.map((fc) => (fc.id === id ? updatedFlashcard : fc)),
         isSubmitting: false,
       }));
 
@@ -141,46 +139,43 @@ export function usePendingFlashcards() {
   /**
    * Akceptuje oczekującą fiszkę i przenosi ją do zestawu
    */
-  const acceptFlashcard = useCallback(
-    async (id: string, command: AcceptPendingFlashcardCommand) => {
-      setState((prev) => ({ ...prev, isSubmitting: true, error: null }));
+  const acceptFlashcard = useCallback(async (id: string, command: AcceptPendingFlashcardCommand) => {
+    setState((prev) => ({ ...prev, isSubmitting: true, error: null }));
 
-      try {
-        const response = await fetch(`/api/v1/pending-flashcards/${id}/accept`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(command),
-        });
+    try {
+      const response = await fetch(`/api/v1/pending-flashcards/${id}/accept`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(command),
+      });
 
-        if (!response.ok) {
-          const errorData: ErrorResponseDTO = await response.json();
-          throw new Error(errorData.error.message || "Nie udało się zaakceptować fiszki");
-        }
-
-        const result: AcceptPendingFlashcardResponseDTO = await response.json();
-
-        // Usuń fiszkę z listy oczekujących
-        setState((prev) => ({
-          ...prev,
-          pendingFlashcards: prev.pendingFlashcards.filter((fc) => fc.id !== id),
-          isSubmitting: false,
-        }));
-
-        return result;
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "Nieznany błąd";
-
-        setState((prev) => ({
-          ...prev,
-          error: errorMessage,
-          isSubmitting: false,
-        }));
-
-        throw error;
+      if (!response.ok) {
+        const errorData: ErrorResponseDTO = await response.json();
+        throw new Error(errorData.error.message || "Nie udało się zaakceptować fiszki");
       }
-    },
-    []
-  );
+
+      const result: AcceptPendingFlashcardResponseDTO = await response.json();
+
+      // Usuń fiszkę z listy oczekujących
+      setState((prev) => ({
+        ...prev,
+        pendingFlashcards: prev.pendingFlashcards.filter((fc) => fc.id !== id),
+        isSubmitting: false,
+      }));
+
+      return result;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Nieznany błąd";
+
+      setState((prev) => ({
+        ...prev,
+        error: errorMessage,
+        isSubmitting: false,
+      }));
+
+      throw error;
+    }
+  }, []);
 
   /**
    * Odrzuca (usuwa) oczekującą fiszkę

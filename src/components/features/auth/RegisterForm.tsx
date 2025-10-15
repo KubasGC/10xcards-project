@@ -82,8 +82,8 @@ export function RegisterForm() {
         throw new Error(data?.error?.message || "Błąd rejestracji");
       }
 
-      // Success - redirect to generate page
-      window.location.href = "/generate";
+      // Success - redirect to home page
+      window.location.href = "/";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Wystąpił nieoczekiwany błąd");
     } finally {

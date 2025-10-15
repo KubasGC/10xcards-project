@@ -1,6 +1,6 @@
-# Dokument wymagań produktu (PRD) - 10xCards
+# Dokument wymagań produktu (PRD) - fiszkuj.pl
 ## 1. Przegląd produktu
-Produkt 10xCards ułatwia tworzenie, organizację i naukę z fiszek poprzez wykorzystanie generatywnej sztucznej inteligencji oraz prostego, gotowego algorytmu powtórek. Celem jest zredukowanie bariery wejścia do metody spaced repetition dzięki szybkiemu generowaniu jakościowych fiszek i intuicyjnym przepływom akceptacji, edycji i nauki.
+Produkt fiszkuj.pl ułatwia tworzenie, organizację i naukę z fiszek poprzez wykorzystanie generatywnej sztucznej inteligencji oraz prostego, gotowego algorytmu powtórek. Celem jest zredukowanie bariery wejścia do metody spaced repetition dzięki szybkiemu generowaniu jakościowych fiszek i intuicyjnym przepływom akceptacji, edycji i nauki.
 
 Zakres MVP:
 - Generowanie kandydatów na fiszki przez AI z wklejonego tekstu i opcjonalnej wskazówki.

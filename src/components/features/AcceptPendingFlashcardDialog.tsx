@@ -141,9 +141,7 @@ export function AcceptPendingFlashcardDialog({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>
-            {isBulkMode ? `Zaakceptuj ${bulkCount} fiszek` : "Zaakceptuj fiszkę"}
-          </DialogTitle>
+          <DialogTitle>{isBulkMode ? `Zaakceptuj ${bulkCount} fiszek` : "Zaakceptuj fiszkę"}</DialogTitle>
           <DialogDescription>
             {isBulkMode
               ? `Wybierz istniejący zestaw lub utwórz nowy, aby dodać ${bulkCount} zaznaczonych fiszek do swojej kolekcji.`
@@ -166,12 +164,13 @@ export function AcceptPendingFlashcardDialog({
               </div>
             </div>
           )}
-          
+
           {/* Info o liczbie fiszek w trybie bulk */}
           {isBulkMode && (
             <div className="rounded-lg border bg-primary/10 p-4">
               <p className="text-sm text-foreground">
-                Wszystkie <span className="font-semibold">{bulkCount} zaznaczone fiszki</span> zostaną dodane do wybranego zestawu.
+                Wszystkie <span className="font-semibold">{bulkCount} zaznaczone fiszki</span> zostaną dodane do
+                wybranego zestawu.
               </p>
             </div>
           )}

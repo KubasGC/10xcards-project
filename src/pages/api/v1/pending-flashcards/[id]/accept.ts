@@ -1,11 +1,7 @@
 import type { APIRoute } from "astro";
 import { error401, error400, error500, error404 } from "@/lib/helpers/api-error.helper";
 import { z } from "zod";
-import type {
-  AcceptPendingFlashcardCommand,
-  AcceptPendingFlashcardResponseDTO,
-  CreateSetCommand,
-} from "@/types";
+import type { AcceptPendingFlashcardCommand, AcceptPendingFlashcardResponseDTO, CreateSetCommand } from "@/types";
 
 // Schemat dla body
 const acceptSchema = z.union([
@@ -48,7 +44,7 @@ export const POST: APIRoute = async ({ locals, request, params }) => {
     }
 
     // Pobierz body
-    const body = await request.json() as AcceptPendingFlashcardCommand;
+    const body = (await request.json()) as AcceptPendingFlashcardCommand;
 
     // Walidacja body
     try {
