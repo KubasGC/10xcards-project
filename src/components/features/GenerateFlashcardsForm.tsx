@@ -14,7 +14,7 @@ const formSchema = z.object({
   sourceText: z
     .string()
     .min(1000, "Tekst źródłowy musi zawierać co najmniej 1000 znaków")
-    .max(20000, "Tekst źródłowy może zawierać maksymalnie 20000 znaków"),
+    .max(100000, "Tekst źródłowy może zawierać maksymalnie 100000 znaków"),
   hint: z.string().max(500, "Wskazówka może zawierać maksymalnie 500 znaków").optional(),
 });
 
@@ -84,7 +84,7 @@ export function GenerateFlashcardsForm({
               </FormControl>
               <div className="flex items-center justify-between">
                 <FormDescription>Wprowadź tekst zawierający materiał do nauki</FormDescription>
-                <CharacterCounter current={field.value.length} max={20000} min={1000} />
+                <CharacterCounter current={field.value.length} max={100000} min={1000} />
               </div>
               <FormMessage />
             </FormItem>

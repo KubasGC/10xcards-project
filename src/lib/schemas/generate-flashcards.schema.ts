@@ -15,7 +15,7 @@ export const GenerateFlashcardsSchema = z.object({
       invalid_type_error: "source_text must be a string",
     })
     .min(1000, "source_text must be at least 1000 characters")
-    .max(20000, "source_text must not exceed 20000 characters")
+    .max(100000, "source_text must not exceed 100000 characters")
     .trim(),
 
   hint: z
