@@ -3,7 +3,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -205,11 +212,7 @@ export function AcceptPendingFlashcardDialog({
                         <FormItem>
                           <FormLabel>Nazwa zestawu *</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="np. JavaScript Podstawy"
-                              disabled={isSubmitting}
-                              {...field}
-                            />
+                            <Input placeholder="np. JavaScript Podstawy" disabled={isSubmitting} {...field} />
                           </FormControl>
                           <div className="flex items-center justify-between">
                             <FormMessage />
@@ -248,18 +251,10 @@ export function AcceptPendingFlashcardDialog({
         </div>
 
         <DialogFooter>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleClose}
-            disabled={isSubmitting}
-          >
+          <Button type="button" variant="outline" onClick={handleClose} disabled={isSubmitting}>
             Anuluj
           </Button>
-          <Button
-            onClick={handleAccept}
-            disabled={isSubmitting || (!canAcceptExisting && !canAcceptNew)}
-          >
+          <Button onClick={handleAccept} disabled={isSubmitting || (!canAcceptExisting && !canAcceptNew)}>
             {isSubmitting ? (
               <>
                 <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />

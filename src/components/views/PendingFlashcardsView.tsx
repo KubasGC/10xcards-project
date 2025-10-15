@@ -143,7 +143,7 @@ export default function PendingFlashcardsView() {
       });
 
       handleCloseEditDialog();
-    } catch (error) {
+    } catch {
       toast.error("Błąd zapisywania", {
         description: "Nie udało się zapisać zmian. Spróbuj ponownie.",
       });
@@ -176,7 +176,8 @@ export default function PendingFlashcardsView() {
   /**
    * Akceptacja fiszki - przeniesienie do zestawu
    */
-  const handleAcceptFlashcardSubmit = async (id: string, command: AcceptPendingFlashcardCommand) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleAcceptFlashcardSubmit = async (id: string, _command: AcceptPendingFlashcardCommand) => {
     setAcceptDialogState((prev) => ({ ...prev, isSubmitting: true }));
 
     try {
@@ -191,7 +192,7 @@ export default function PendingFlashcardsView() {
       });
 
       handleCloseAcceptDialog();
-    } catch (error) {
+    } catch {
       toast.error("Błąd akceptacji", {
         description: "Nie udało się zaakceptować fiszki. Spróbuj ponownie.",
       });

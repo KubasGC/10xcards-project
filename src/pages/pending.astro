@@ -12,5 +12,7 @@ import NavBar from "@/components/features/NavBar.astro";
 
 <Layout title="Oczekujące fiszki - 10xCards">
   <NavBar />
-  <PendingFlashcardsView client:load />
+  <div class="pt-16">
+    <PendingFlashcardsView client:load />
+  </div>
 </Layout>

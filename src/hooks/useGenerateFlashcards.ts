@@ -33,6 +33,7 @@ export function useGenerateFlashcards() {
   const transformQuotaDTO = useCallback((dto: GenerationQuotaDTO): QuotaViewModel => {
     const percentage = (dto.used_today / dto.daily_limit) * 100;
     const resetsAt = new Date(dto.resets_at);
+    // Formatuj datę w lokalnej strefie czasowej użytkownika (automatyczna konwersja)
     const resetsAtFormatted = resetsAt.toLocaleString("pl-PL", {
       day: "numeric",
       month: "long",

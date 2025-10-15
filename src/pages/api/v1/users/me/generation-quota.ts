@@ -21,9 +21,11 @@ export const GET: APIRoute = async ({ locals }) => {
       });
     }
 
-    // 2. Obliczenie zakresu czasowego dla dzisiejszych generacji (UTC)
+    // 2. Obliczenie zakresu czasowego dla dzisiejszych generacji (czas polski - Europe/Warsaw)
     const today = new Date();
-    const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    // Konwertuj aktualny czas na strefę czasową Polski
+    const todayInPoland = new Date(today.toLocaleString("en-US", { timeZone: "Europe/Warsaw" }));
+    const startOfDay = new Date(todayInPoland.getFullYear(), todayInPoland.getMonth(), todayInPoland.getDate());
     const endOfDay = new Date(startOfDay.getTime() + 24 * 60 * 60 * 1000);
 
     // 3. Zapytanie do bazy o dzisiejsze generacje przez Supabase client
@@ -48,11 +50,9 @@ export const GET: APIRoute = async ({ locals }) => {
     const usedTodayCount = usedToday || 0;
     const remaining = Math.max(0, dailyLimit - usedTodayCount);
 
-    // 5. Obliczenie czasu resetu (następna północ UTC)
-    const tomorrow = new Date(today);
-    tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
-    tomorrow.setUTCHours(0, 0, 0, 0);
-    const resetsAt = tomorrow.toISOString();
+    // 5. Obliczenie czasu resetu (następna północ czasu polskiego)
+    const tomorrowInPoland = new Date(startOfDay.getTime() + 24 * 60 * 60 * 1000);
+    const resetsAt = tomorrowInPoland.toISOString();
 
     // 6. Tworzenie odpowiedzi zgodnej z API planem
     const quota: GenerationQuotaDTO = {

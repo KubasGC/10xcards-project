@@ -54,7 +54,7 @@ export function PendingFlashcardCard({
   };
 
   return (
-    <Card className={`w-full ${isSelected ? 'ring-2 ring-primary' : ''}`}>
+    <Card className={`w-full ${isSelected ? "ring-2 ring-primary" : ""}`}>
       <CardHeader className="pb-3">
         {/* Checkbox dla zaznaczania (tylko w trybie zaznaczania) */}
         {selectionMode && (
@@ -65,10 +65,7 @@ export function PendingFlashcardCard({
               onCheckedChange={handleSelectionChange}
               disabled={isDisabled}
             />
-            <label
-              htmlFor={`select-${flashcard.id}`}
-              className="text-sm font-medium cursor-pointer"
-            >
+            <label htmlFor={`select-${flashcard.id}`} className="text-sm font-medium cursor-pointer">
               Zaznacz fiszkę
             </label>
           </div>
@@ -77,17 +74,13 @@ export function PendingFlashcardCard({
         <div className="space-y-4">
           {/* Przód fiszki */}
           <div>
-            <label className="text-sm font-medium text-muted-foreground mb-1 block">
-              Przód fiszki
-            </label>
+            <h3 className="text-sm font-medium text-muted-foreground mb-1 block">Przód fiszki</h3>
             <p className="font-medium leading-relaxed">{flashcard.front_draft}</p>
           </div>
 
           {/* Tył fiszki */}
           <div>
-            <label className="text-sm font-medium text-muted-foreground mb-1 block">
-              Tył fiszki
-            </label>
+            <h3 className="text-sm font-medium text-muted-foreground mb-1 block">Tył fiszki</h3>
             <p className="text-muted-foreground leading-relaxed">{flashcard.back_draft}</p>
           </div>
         </div>
