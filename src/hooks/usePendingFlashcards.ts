@@ -8,6 +8,10 @@ import type {
   ErrorResponseDTO,
   PendingFlashcardListResponseDTO,
   SetListResponseDTO,
+  BulkAcceptPendingFlashcardsCommand,
+  BulkAcceptResponseDTO,
+  BulkDeletePendingFlashcardsCommand,
+  BulkDeleteResponseDTO,
 } from "@/types";
 
 interface PendingFlashcardsState {
@@ -213,6 +217,101 @@ export function usePendingFlashcards() {
   }, []);
 
   /**
+   * Masowa akceptacja oczekujących fiszek
+   */
+  const bulkAcceptFlashcards = useCallback(
+    async (pendingIds: string[], command: Omit<AcceptPendingFlashcardCommand, "pending_ids">) => {
+      setState((prev) => ({ ...prev, isSubmitting: true, error: null }));
+
+      try {
+        const bulkCommand: BulkAcceptPendingFlashcardsCommand = {
+          pending_ids: pendingIds,
+          ...(command.set_id ? { set_id: command.set_id } : { new_set: command.new_set! }),
+        } as BulkAcceptPendingFlashcardsCommand;
+
+        const response = await fetch("/api/v1/pending-flashcards/bulk-accept", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(bulkCommand),
+        });
+
+        if (!response.ok) {
+          const errorData: ErrorResponseDTO = await response.json();
+          throw new Error(errorData.error.message || "Nie udało się zaakceptować fiszek");
+        }
+
+        const result: BulkAcceptResponseDTO = await response.json();
+
+        // Usuń zaakceptowane fiszki z listy oczekujących
+        const acceptedIds = new Set(result.flashcards.map((fc) => pendingIds[result.flashcards.indexOf(fc)]));
+        setState((prev) => ({
+          ...prev,
+          pendingFlashcards: prev.pendingFlashcards.filter((fc) => !pendingIds.includes(fc.id)),
+          isSubmitting: false,
+        }));
+
+        return result;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "Nieznany błąd";
+
+        setState((prev) => ({
+          ...prev,
+          error: errorMessage,
+          isSubmitting: false,
+        }));
+
+        throw error;
+      }
+    },
+    []
+  );
+
+  /**
+   * Masowe odrzucenie (usunięcie) oczekujących fiszek
+   */
+  const bulkRejectFlashcards = useCallback(async (pendingIds: string[]) => {
+    setState((prev) => ({ ...prev, isSubmitting: true, error: null }));
+
+    try {
+      const command: BulkDeletePendingFlashcardsCommand = {
+        pending_ids: pendingIds,
+      };
+
+      const response = await fetch("/api/v1/pending-flashcards/bulk-delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(command),
+      });
+
+      if (!response.ok) {
+        const errorData: ErrorResponseDTO = await response.json();
+        throw new Error(errorData.error.message || "Nie udało się odrzucić fiszek");
+      }
+
+      const result: BulkDeleteResponseDTO = await response.json();
+
+      // Usuń odrzucone fiszki z listy oczekujących
+      setState((prev) => ({
+        ...prev,
+        pendingFlashcards: prev.pendingFlashcards.filter((fc) => !result.deleted_ids.includes(fc.id)),
+        isSubmitting: false,
+      }));
+
+      return result;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Nieznany błąd";
+
+      setState((prev) => ({
+        ...prev,
+        error: errorMessage,
+        isSubmitting: false,
+      }));
+
+      throw error;
+    }
+  }, []);
+
+  /**
    * Czyści błąd
    */
   const clearError = useCallback(() => {
@@ -232,6 +331,8 @@ export function usePendingFlashcards() {
     editFlashcard,
     acceptFlashcard,
     rejectFlashcard,
+    bulkAcceptFlashcards,
+    bulkRejectFlashcards,
     clearError,
   };
 }

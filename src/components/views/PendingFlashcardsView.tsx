@@ -15,8 +15,17 @@ import type { PendingFlashcardDTO, UpdatePendingFlashcardCommand, AcceptPendingF
  */
 export default function PendingFlashcardsView() {
   // Użyj hooka do zarządzania stanem i API
-  const { state, editFlashcard, acceptFlashcard, rejectFlashcard, clearError, fetchPendingFlashcards, fetchSets } =
-    usePendingFlashcards();
+  const {
+    state,
+    editFlashcard,
+    acceptFlashcard,
+    rejectFlashcard,
+    bulkAcceptFlashcards,
+    bulkRejectFlashcards,
+    clearError,
+    fetchPendingFlashcards,
+    fetchSets,
+  } = usePendingFlashcards();
 
   // Stan dla modala edycji
   const [editDialogState, setEditDialogState] = useState<{
@@ -105,19 +114,17 @@ export default function PendingFlashcardsView() {
    */
   const handleAcceptFlashcardSubmit = async (id: string, command: AcceptPendingFlashcardCommand) => {
     try {
-      // Jeśli jesteśmy w trybie bulk, akceptuj wszystkie zaznaczone fiszki
+      // Jeśli jesteśmy w trybie bulk, akceptuj wszystkie zaznaczone fiszki jednym requestem
       if (acceptDialogState.isBulkMode) {
         const flashcardsToAccept = Array.from(selectedFlashcards);
-        const acceptPromises = flashcardsToAccept.map((flashcardId) => acceptFlashcard(flashcardId, command));
+        const result = await bulkAcceptFlashcards(flashcardsToAccept, command);
 
-        await Promise.all(acceptPromises);
-
-        toast.success(`${flashcardsToAccept.length} fiszek zostało zaakceptowanych!`, {
-          description: "Fiszki zostały dodane do wybranego zestawu.",
+        toast.success(`${result.accepted_count} fiszek zostało zaakceptowanych!`, {
+          description: `Fiszki zostały dodane do zestawu "${result.set.name}".`,
         });
 
         // Ponownie pobierz dane po bulk accept
-        await Promise.all([fetchPendingFlashcards(), fetchSets()]);
+        await fetchSets();
 
         setSelectedFlashcards(new Set());
         setSelectionMode(false);
@@ -129,7 +136,7 @@ export default function PendingFlashcardsView() {
         });
 
         // Ponownie pobierz dane po pojedynczej akceptacji
-        await Promise.all([fetchPendingFlashcards(), fetchSets()]);
+        await fetchSets();
       }
 
       handleCloseAcceptDialog();
@@ -215,28 +222,26 @@ export default function PendingFlashcardsView() {
   /**
    * Masowe odrzucenie zaznaczonych fiszek
    */
-  const handleBulkReject = () => {
+  const handleBulkReject = async () => {
     if (selectedFlashcards.size === 0) return;
 
     const count = selectedFlashcards.size;
     if (window.confirm(`Czy na pewno chcesz odrzucić ${count} zaznaczonych fiszek? Ta akcja jest nieodwracalna.`)) {
-      const rejectPromises = Array.from(selectedFlashcards).map((id) =>
-        rejectFlashcard(id).catch(() => {
-          // Kontynuuj nawet jeśli jeden odrzut się nie uda - błąd zostanie obsłużony w hook'u
-        })
-      );
+      try {
+        const flashcardsToReject = Array.from(selectedFlashcards);
+        const result = await bulkRejectFlashcards(flashcardsToReject);
 
-      Promise.all(rejectPromises).then(async () => {
-        toast.success(`${count} fiszek zostało odrzuconych`, {
+        toast.success(`${result.deleted_count} fiszek zostało odrzuconych`, {
           description: "Fiszki zostały trwale usunięte.",
         });
 
-        // Ponownie pobierz dane po bulk reject
-        await fetchPendingFlashcards();
-
         setSelectedFlashcards(new Set());
         setSelectionMode(false);
-      });
+      } catch {
+        toast.error("Błąd odrzucenia", {
+          description: "Nie udało się odrzucić fiszek. Spróbuj ponownie.",
+        });
+      }
     }
   };
 

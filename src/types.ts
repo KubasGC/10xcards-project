@@ -211,6 +211,21 @@ export interface BulkAcceptResponseDTO {
   failed: BulkAcceptFailureDTO[];
 }
 
+/**
+ * Komenda masowego usunięcia oczekujących fiszek (POST /api/v1/pending-flashcards/bulk-delete)
+ */
+export interface BulkDeletePendingFlashcardsCommand {
+  pending_ids: string[]; // 1-50 UUIDs
+}
+
+/**
+ * Odpowiedź na masowe usunięcie oczekujących fiszek
+ */
+export interface BulkDeleteResponseDTO {
+  deleted_count: number;
+  deleted_ids: string[];
+}
+
 // ============================================================================
 // AI GENERATION DTOs - Typy związane z generowaniem przez AI
 // ============================================================================

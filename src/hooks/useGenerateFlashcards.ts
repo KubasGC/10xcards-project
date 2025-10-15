@@ -132,25 +132,18 @@ export function useGenerateFlashcards() {
 
         const data: GenerateFlashcardsResponseDTO = await response.json();
 
-        // Sukces - aktualizuj stan
+        // Sukces - aktualizuj stan generowania
         setState((prev) => ({
           ...prev,
           generation: {
             status: "success",
             error: null,
           },
-          // Aktualizuj limit po udanym generowaniu
-          quota: {
-            ...prev.quota,
-            data: prev.quota.data
-              ? {
-                  ...prev.quota.data,
-                  remaining: data.quota_remaining,
-                  percentage: ((prev.quota.data.limit - data.quota_remaining) / prev.quota.data.limit) * 100,
-                }
-              : null,
-          },
         }));
+
+        // Ponownie pobierz aktualne dane o limicie po udanym generowaniu
+        // Zamiast polegać na wartości z API generowania, pobierz świeże dane
+        await fetchQuota();
 
         return data;
       } catch (error) {
