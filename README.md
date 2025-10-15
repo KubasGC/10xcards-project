@@ -37,6 +37,7 @@ For more background and user stories, see Product Requirements (Polish): [`./.ai
 - Styling: Tailwind CSS 4, shadcn/ui
 - Backend/BaaS: Supabase (PostgreSQL, SDK, auth)
 - AI provider: OpenRouter (multi‑model access and cost controls)
+- Testing: Vitest (unit/integration), Playwright (E2E), Testing Library
 - CI/CD: GitHub Actions
 - Hosting: DigitalOcean (Docker image)
 
@@ -111,6 +112,11 @@ Notes:
 - `lint`: Run ESLint over the codebase
 - `lint:fix`: Attempt to auto‑fix lint issues
 - `format`: Run Prettier to format supported files
+- `test`: Run all tests (unit + integration)
+- `test:unit`: Run unit tests with Vitest
+- `test:integration`: Run integration tests
+- `test:e2e`: Run end-to-end tests with Playwright
+- `test:coverage`: Run tests with coverage report
 
 ### Project scope
 
