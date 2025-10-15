@@ -69,21 +69,21 @@ export function RegisterForm() {
     setIsLoading(true);
 
     try {
-      // TODO: Implement actual registration logic with Supabase
-      // const response = await fetch('/api/v1/auth/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password })
-      // });
+      const response = await fetch("/api/v1/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, confirmPassword }),
+      });
 
-      // if (!response.ok) {
-      //   const data = await response.json();
-      //   throw new Error(data.error || 'Błąd rejestracji');
-      // }
+      const data = await response.json();
 
-      // window.location.href = '/generate';
+      if (!response.ok) {
+        // Handle general error
+        throw new Error(data?.error?.message || "Błąd rejestracji");
+      }
 
-      console.log("Registration attempt:", { email, password });
+      // Success - redirect to generate page
+      window.location.href = "/generate";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Wystąpił nieoczekiwany błąd");
     } finally {

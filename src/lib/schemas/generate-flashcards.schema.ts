@@ -1,6 +1,6 @@
 /**
  * Zod Validation Schema for Generate Flashcards Endpoint
- * Validates POST /api/v1/flashcards/generate request body
+ * Validates POST /api/v1/flashcards/generate request body and AI response
  */
 
 import { z } from "zod";
@@ -31,6 +31,45 @@ export const GenerateFlashcardsSchema = z.object({
  * TypeScript type inferred from schema
  */
 export type GenerateFlashcardsInput = z.infer<typeof GenerateFlashcardsSchema>;
+
+/**
+ * Schema for a single flashcard candidate from AI
+ */
+export const FlashcardCandidateSchema = z.object({
+  front: z
+    .string({
+      required_error: "front is required",
+      invalid_type_error: "front must be a string",
+    })
+    .min(1, "front must not be empty")
+    .max(500, "front must not exceed 500 characters")
+    .trim(),
+
+  back: z
+    .string({
+      required_error: "back is required",
+      invalid_type_error: "back must be a string",
+    })
+    .min(1, "back must not be empty")
+    .max(1000, "back must not exceed 1000 characters")
+    .trim(),
+});
+
+/**
+ * Schema for AI response containing flashcard candidates
+ */
+export const FlashcardsResponseSchema = z.object({
+  flashcards: z
+    .array(FlashcardCandidateSchema)
+    .min(1, "At least one flashcard must be generated")
+    .max(20, "Maximum 20 flashcards can be generated at once"),
+});
+
+/**
+ * TypeScript types inferred from schemas
+ */
+export type FlashcardCandidate = z.infer<typeof FlashcardCandidateSchema>;
+export type FlashcardsResponse = z.infer<typeof FlashcardsResponseSchema>;
 
 /**
  * Validates request body for flashcard generation

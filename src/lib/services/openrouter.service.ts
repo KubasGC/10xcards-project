@@ -1,220 +1,240 @@
 /**
  * OpenRouter Service
- * Handles communication with OpenRouter API for AI flashcard generation
+ * Handles communication with OpenRouter.ai API for flashcard generation.
+ * Provides structured response generation with Zod schema validation.
  */
 
-interface FlashcardCandidate {
-  front: string;
-  back: string;
-}
-
-interface GenerationMetadata {
-  model: string;
-  input_tokens: number;
-  output_tokens: number;
-  generation_time_ms: number;
-  tokens_used: number;
-}
-
-interface OpenRouterResponse {
-  candidates: FlashcardCandidate[];
-  metadata: GenerationMetadata;
-}
+import { z } from "zod";
+import { zodToJsonSchema } from "zod-to-json-schema";
+import type { GenerateFlashcardsParams, OpenRouterServiceConfig, OpenRouterAPIResponse } from "./openrouter.types";
+import { OpenRouterConfigurationError, OpenRouterAPIError, OpenRouterResponseError } from "./openrouter.types";
 
 /**
- * Custom error for network-related issues
+ * System prompt for flashcard generation
+ * Defines the AI's role and behavior
  */
-export class NetworkError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "NetworkError";
-  }
-}
+const SYSTEM_PROMPT = `You are an expert educational assistant specialized in creating high-quality flashcards for active learning and spaced repetition.
+
+Your task is to analyze the provided source text and generate flashcards that:
+1. Focus on key concepts, definitions, and important facts
+2. Use clear, concise language
+3. Create questions that promote active recall
+4. Ensure answers are specific and accurate
+5. Avoid ambiguity - each question should have one clear answer
+6. Use the hint (if provided) to focus on specific topics or adjust difficulty
+7. Generate flashcards in the SAME LANGUAGE as the source text (detect the language automatically)
+
+Guidelines for flashcard creation:
+- Front: Write a clear question or prompt that tests understanding
+- Back: Provide a concise, accurate answer
+- Prefer atomic flashcards (one concept per card)
+- Use natural language, avoid overly technical jargon unless necessary
+- Make questions specific enough to have unambiguous answers
+- IMPORTANT: Always use the same language as the source text for both questions and answers
+
+Always respond in valid JSON format following the provided schema.`;
 
 /**
- * Custom error for timeout issues
- */
-export class TimeoutError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "TimeoutError";
-  }
-}
-
-/**
- * System prompt that instructs the AI model how to generate flashcards
- */
-const SYSTEM_PROMPT = `You are a flashcard generation expert. Your task is to create high-quality flashcards from source text.
-
-Rules:
-1. Generate as many flashcards as you want/can (but no more than 25) from the provided text
-2. Each flashcard should focus on a single concept or fact
-3. Front (question) should be clear and concise (1-200 characters)
-4. Back (answer) should be complete but not too verbose (1-600 characters)
-5. Avoid trivial questions
-6. Ensure questions test understanding, not just memorization
-7. Use the hint if provided to focus on specific aspects
-
-Response format (JSON):
-{
-  "candidates": [
-    {"front": "question text", "back": "answer text"},
-    ...
-  ]
-}`;
-
-/**
- * Generates flashcards from source text using OpenRouter API
+ * Service for interacting with OpenRouter.ai API
  *
- * @param sourceText - The source text to generate flashcards from (1000-20000 chars)
- * @param hint - Optional hint to guide AI generation (max 500 chars)
- * @param options - Optional configuration (timeout in ms)
- * @returns Promise with generated flashcard candidates and metadata
- * @throws {NetworkError} When network connection fails
- * @throws {TimeoutError} When request exceeds timeout limit
- * @throws {Error} For other API or parsing errors
+ * Features:
+ * - Flashcard generation from source text
+ * - Structured JSON response with Zod validation
+ * - Automatic schema conversion to JSON Schema
+ * - Comprehensive error handling
+ *
+ * @example
+ * ```typescript
+ * const service = new OpenRouterService();
+ * const result = await service.generateFlashcards({
+ *   sourceText: "TypeScript is a typed superset of JavaScript...",
+ *   responseSchema: FlashcardsSchema,
+ * });
+ * ```
  */
-export async function generateFlashcards(
-  sourceText: string,
-  hint?: string,
-  options: { timeout?: number } = {}
-): Promise<OpenRouterResponse> {
-  const apiKey = import.meta.env.OPENROUTER_API_KEY;
-  const model = import.meta.env.OPENROUTER_MODEL || "openai/gpt-4-turbo";
-  const timeout = options.timeout || 30000; // 30 seconds default
+export class OpenRouterService {
+  private readonly apiKey: string;
+  private readonly model: string;
+  private readonly baseUrl: string = "https://openrouter.ai/api/v1";
 
-  // Validate API key
-  if (!apiKey) {
-    throw new Error("OPENROUTER_API_KEY is not configured");
+  /**
+   * Creates a new OpenRouterService instance
+   *
+   * @param config - Configuration options
+   * @param config.apiKey - OpenRouter API key (falls back to OPENROUTER_API_KEY env var)
+   * @param config.model - Model to use (falls back to OPENROUTER_MODEL env var)
+   * @throws {OpenRouterConfigurationError} If API key or model is missing
+   */
+  constructor(config: OpenRouterServiceConfig = {}) {
+    // Load API key from config or environment
+    this.apiKey = config.apiKey ?? import.meta.env.OPENROUTER_API_KEY;
+    if (!this.apiKey) {
+      throw new OpenRouterConfigurationError(
+        "OpenRouter API key is missing. Provide it via config or OPENROUTER_API_KEY environment variable."
+      );
+    }
+
+    // Load model from config or environment
+    this.model = config.model ?? import.meta.env.OPENROUTER_MODEL;
+    if (!this.model) {
+      throw new OpenRouterConfigurationError(
+        "OpenRouter model is missing. Provide it via config or OPENROUTER_MODEL environment variable."
+      );
+    }
   }
 
-  // Build user prompt
-  let userPrompt = `Generate flashcards from the following text:\n\n${sourceText}`;
-  if (hint) {
-    userPrompt += `\n\nHint: ${hint}`;
+  /**
+   * Generates flashcards from source text
+   *
+   * Sends the source text to the configured model and returns parsed, validated flashcards
+   * according to the provided Zod schema.
+   *
+   * @param params - Generation parameters
+   * @returns Promise resolving to validated flashcard data
+   * @throws {OpenRouterAPIError} If API returns an error
+   * @throws {OpenRouterResponseError} If response parsing/validation fails
+   *
+   * @example
+   * ```typescript
+   * const ResponseSchema = z.object({
+   *   flashcards: z.array(z.object({
+   *     front: z.string(),
+   *     back: z.string(),
+   *   }))
+   * });
+   *
+   * const result = await service.generateFlashcards({
+   *   sourceText: "The Pythagorean theorem states that...",
+   *   hint: "Focus on the mathematical formula",
+   *   responseSchema: ResponseSchema,
+   * });
+   * ```
+   */
+  async generateFlashcards<T extends z.ZodTypeAny>(params: GenerateFlashcardsParams<T>): Promise<z.infer<T>> {
+    const payload = this._buildPayload(params);
+    const apiResponse = await this._sendRequest(payload);
+    return this._parseResponse(apiResponse, params.responseSchema);
   }
 
-  const startTime = Date.now();
+  /**
+   * Builds the request payload for OpenRouter API
+   *
+   * Converts Zod schema to JSON Schema and formats the request according to
+   * OpenRouter's json_schema response format specification.
+   *
+   * @param params - Generation parameters
+   * @returns Formatted payload object ready for API request
+   */
+  private _buildPayload<T extends z.ZodTypeAny>(params: GenerateFlashcardsParams<T>): object {
+    const { sourceText, hint, responseSchema, modelParams } = params;
 
-  // Create abort controller for timeout
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeout);
+    // Build user prompt from source text and optional hint
+    const userPrompt = this._buildUserPrompt(sourceText, hint);
 
-  try {
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://10xcards.app", // Optional: for OpenRouter analytics
-        "X-Title": "10xCards Flashcard Generator", // Optional: for OpenRouter analytics
-      },
-      body: JSON.stringify({
-        model,
-        messages: [
-          {
-            role: "system",
-            content: SYSTEM_PROMPT,
-          },
-          {
-            role: "user",
-            content: userPrompt,
-          },
-        ],
-        response_format: { type: "json_object" },
-        temperature: 0.7,
-      }),
-      signal: controller.signal,
-    });
+    // Use a fixed name for the schema
+    const schemaName = "flashcards_response";
 
-    clearTimeout(timeoutId);
+    // Convert Zod schema to JSON Schema
+    const jsonSchemaFull = zodToJsonSchema(responseSchema, schemaName);
 
-    // Handle non-200 responses
-    if (!response.ok) {
-      if (response.status === 503) {
-        throw new NetworkError("OpenRouter API is temporarily unavailable");
-      }
-      const errorText = await response.text().catch(() => "Unknown error");
-      throw new Error(`OpenRouter API error (${response.status}): ${errorText}`);
-    }
-
-    // Parse response
-    const data = await response.json();
-    const generationTimeMs = Date.now() - startTime;
-
-    // Extract content from OpenRouter response
-    const content = data.choices?.[0]?.message?.content;
-    if (!content) {
-      throw new Error("AI returned no content");
-    }
-
-    // Parse the JSON content
-    let parsedContent;
-    try {
-      parsedContent = JSON.parse(content);
-    } catch {
-      throw new Error("AI returned invalid JSON format");
-    }
-
-    // Validate structure
-    if (!parsedContent.candidates || !Array.isArray(parsedContent.candidates)) {
-      throw new Error("AI response missing candidates array");
-    }
-
-    if (parsedContent.candidates.length === 0) {
-      throw new Error("AI returned no candidates");
-    }
-
-    // Validate each candidate
-    for (const candidate of parsedContent.candidates) {
-      if (!candidate.front || !candidate.back) {
-        throw new Error("AI returned candidate with missing front or back");
-      }
-      if (typeof candidate.front !== "string" || typeof candidate.back !== "string") {
-        throw new Error("AI returned candidate with invalid types");
-      }
-      if (candidate.front.length < 1 || candidate.front.length > 200) {
-        throw new Error("AI returned candidate with invalid front length");
-      }
-      if (candidate.back.length < 1 || candidate.back.length > 600) {
-        throw new Error("AI returned candidate with invalid back length");
-      }
-    }
-
-    // Extract token usage
-    const inputTokens = data.usage?.prompt_tokens || 0;
-    const outputTokens = data.usage?.completion_tokens || 0;
-    const totalTokens = data.usage?.total_tokens || inputTokens + outputTokens;
+    // Extract the actual schema (zod-to-json-schema wraps it in definitions)
+    const schema = jsonSchemaFull.definitions?.[schemaName] ?? jsonSchemaFull;
 
     return {
-      candidates: parsedContent.candidates,
-      metadata: {
-        model: data.model || model,
-        input_tokens: inputTokens,
-        output_tokens: outputTokens,
-        generation_time_ms: generationTimeMs,
-        tokens_used: totalTokens,
+      model: this.model,
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: userPrompt },
+      ],
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          name: schemaName,
+          strict: true,
+          schema: schema,
+        },
       },
+      ...modelParams,
     };
-  } catch (error) {
-    clearTimeout(timeoutId);
+  }
 
-    // Handle abort (timeout)
-    if (error instanceof Error && error.name === "AbortError") {
-      throw new TimeoutError(`Request timed out after ${timeout}ms`);
+  /**
+   * Builds user prompt from source text and optional hint
+   *
+   * @param sourceText - Source text to generate flashcards from
+   * @param hint - Optional hint to guide generation
+   * @returns Formatted user prompt
+   */
+  private _buildUserPrompt(sourceText: string, hint?: string): string {
+    let prompt = `Generate flashcards from the following source text:\n\n${sourceText}`;
+
+    if (hint) {
+      prompt += `\n\nAdditional guidance: ${hint}`;
     }
 
-    // Handle network errors
-    if (error instanceof TypeError && error.message.includes("fetch")) {
-      throw new NetworkError("Failed to connect to OpenRouter API");
+    return prompt;
+  }
+
+  /**
+   * Sends HTTP request to OpenRouter API
+   *
+   * Handles authentication and error responses from the API.
+   *
+   * @param payload - Request payload object
+   * @returns Promise resolving to API response data
+   * @throws {OpenRouterAPIError} If API returns non-2xx status
+   */
+  private async _sendRequest(payload: object): Promise<unknown> {
+    const response = await fetch(`${this.baseUrl}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      throw new OpenRouterAPIError(
+        `OpenRouter API Error: ${response.status} ${response.statusText}`,
+        response.status,
+        errorBody
+      );
     }
 
-    // Re-throw custom errors
-    if (error instanceof NetworkError || error instanceof TimeoutError) {
-      throw error;
-    }
+    return response.json();
+  }
 
-    // Re-throw other errors
-    throw error;
+  /**
+   * Parses and validates API response
+   *
+   * Extracts the JSON content from the response and validates it against
+   * the provided Zod schema.
+   *
+   * @param apiResponse - Raw response from OpenRouter API
+   * @param schema - Zod schema to validate against
+   * @returns Parsed and validated response data
+   * @throws {OpenRouterResponseError} If response structure is invalid or validation fails
+   */
+  private _parseResponse<T extends z.ZodTypeAny>(apiResponse: unknown, schema: T): z.infer<T> {
+    try {
+      // Extract content from response
+      const response = apiResponse as OpenRouterAPIResponse;
+      const content = response.choices?.[0]?.message?.content;
+
+      if (!content) {
+        throw new Error("No content found in API response.");
+      }
+
+      // Parse JSON content
+      const parsedContent = JSON.parse(content);
+
+      // Validate against the Zod schema
+      return schema.parse(parsedContent);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unknown parsing error";
+      throw new OpenRouterResponseError(`Failed to parse or validate the structured response: ${message}`);
+    }
   }
 }

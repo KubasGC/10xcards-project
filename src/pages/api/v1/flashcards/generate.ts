@@ -8,7 +8,10 @@
 import type { APIRoute } from "astro";
 import type { GenerateFlashcardsResponseDTO } from "../../../../types";
 
-import { validateGenerateFlashcardsInput } from "../../../../lib/schemas/generate-flashcards.schema";
+import {
+  validateGenerateFlashcardsInput,
+  FlashcardsResponseSchema,
+} from "../../../../lib/schemas/generate-flashcards.schema";
 import { error400, error401, error429, error500, error503 } from "../../../../lib/helpers/api-error.helper";
 import {
   checkDailyQuota,
@@ -16,7 +19,12 @@ import {
   recordAnalytics,
   getNextMidnightUTC,
 } from "../../../../lib/services/ai-generation.service";
-import { generateFlashcards, NetworkError, TimeoutError } from "../../../../lib/services/openrouter.service";
+import { OpenRouterService } from "../../../../lib/services/openrouter.service";
+import {
+  OpenRouterAPIError,
+  OpenRouterResponseError,
+  OpenRouterConfigurationError,
+} from "../../../../lib/services/openrouter.types";
 
 // Daily quota limit per user
 const DAILY_QUOTA_LIMIT = 10;
@@ -107,25 +115,50 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     // Step 4: Generate flashcards using AI
+    const startTime = Date.now();
     let aiResponse;
+
     try {
-      aiResponse = await generateFlashcards(source_text, hint, {
-        timeout: 30000, // 30 seconds
+      // Initialize OpenRouter service
+      const openRouterService = new OpenRouterService();
+
+      // Generate flashcards
+      aiResponse = await openRouterService.generateFlashcards({
+        sourceText: source_text,
+        hint: hint,
+        responseSchema: FlashcardsResponseSchema,
+        modelParams: {
+          temperature: 0.7,
+          max_tokens: 2000,
+        },
       });
     } catch (error) {
       console.error("AI generation failed:", error);
 
       // Handle specific error types
-      if (error instanceof TimeoutError) {
-        const response = error503("AI generation timed out. Please try again with shorter text or try again later.");
+      if (error instanceof OpenRouterConfigurationError) {
+        const response = error500("AI service configuration error. Please contact support.");
         return new Response(JSON.stringify(response.body), {
           status: response.status,
           headers: { "Content-Type": "application/json" },
         });
       }
 
-      if (error instanceof NetworkError) {
-        const response = error503("Unable to reach AI service. Please try again in a few moments.");
+      if (error instanceof OpenRouterAPIError) {
+        console.error("OpenRouter API Error:", {
+          statusCode: error.statusCode,
+          responseBody: error.responseBody,
+        });
+        const response = error503("AI service is temporarily unavailable. Please try again later.");
+        return new Response(JSON.stringify(response.body), {
+          status: response.status,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      if (error instanceof OpenRouterResponseError) {
+        console.error("OpenRouter Response Error:", error.message);
+        const response = error500("Failed to parse AI response. Please try again.");
         return new Response(JSON.stringify(response.body), {
           status: response.status,
           headers: { "Content-Type": "application/json" },
@@ -140,10 +173,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
+    const generationTime = Date.now() - startTime;
+
     // Step 5: Save pending flashcards to database
     let savedFlashcards;
     try {
-      savedFlashcards = await savePendingFlashcards(supabase, userId, aiResponse.candidates);
+      savedFlashcards = await savePendingFlashcards(supabase, userId, aiResponse.flashcards);
     } catch (error) {
       console.error("Error saving flashcards:", error);
       const response = error500("Failed to save generated flashcards");
@@ -153,9 +188,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    // Step 6: Record analytics (non-blocking, returns generation_id)
+    // Step 6: Record analytics (non-blocking)
     const generationId = crypto.randomUUID();
-    recordAnalytics(supabase, userId, aiResponse.metadata).catch((error) => {
+    recordAnalytics(supabase, userId, {
+      model: import.meta.env.OPENROUTER_MODEL,
+      input_tokens: 0, // OpenRouter doesn't provide token counts in response with json_schema
+      output_tokens: 0,
+      generation_time_ms: generationTime,
+    }).catch((error) => {
       console.warn("Failed to record analytics (non-blocking):", error);
     });
 
@@ -164,9 +204,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
       generation_id: generationId,
       candidates: savedFlashcards,
       metadata: {
-        model: aiResponse.metadata.model,
-        tokens_used: aiResponse.metadata.tokens_used,
-        generation_time_ms: aiResponse.metadata.generation_time_ms,
+        model: import.meta.env.OPENROUTER_MODEL,
+        tokens_used: 0, // Not available with json_schema response format
+        generation_time_ms: generationTime,
       },
       quota_remaining: DAILY_QUOTA_LIMIT - usedGenerations - 1,
     };

@@ -5,7 +5,7 @@ import { z } from "zod";
  */
 export const loginSchema = z.object({
   email: z.string().min(1, "Email jest wymagany").email("Podaj prawidłowy adres email"),
-  password: z.string().min(1, "Hasło jest wymagane").min(6, "Hasło musi mieć co najmniej 6 znaków"),
+  password: z.string().min(1, "Hasło jest wymagane").min(8, "Hasło musi mieć co najmniej 8 znaków"),
 });
 
 /**
@@ -14,7 +14,13 @@ export const loginSchema = z.object({
 export const registerSchema = z
   .object({
     email: z.string().min(1, "Email jest wymagany").email("Podaj prawidłowy adres email"),
-    password: z.string().min(1, "Hasło jest wymagane").min(6, "Hasło musi mieć co najmniej 6 znaków"),
+    password: z
+      .string()
+      .min(1, "Hasło jest wymagane")
+      .min(8, "Hasło musi mieć co najmniej 8 znaków")
+      .regex(/[A-Z]/, "Hasło musi zawierać przynajmniej jedną dużą literę")
+      .regex(/[a-z]/, "Hasło musi zawierać przynajmniej jedną małą literę")
+      .regex(/[0-9]/, "Hasło musi zawierać przynajmniej jedną cyfrę"),
     confirmPassword: z.string().min(1, "Potwierdzenie hasła jest wymagane"),
   })
   .refine((data) => data.password === data.confirmPassword, {

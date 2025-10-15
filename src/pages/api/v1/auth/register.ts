@@ -60,11 +60,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
       if (error.message.includes("User already registered")) {
         errorMessage = "Użytkownik o tym adresie email już istnieje";
       } else if (error.message.includes("Password should be at least")) {
-        errorMessage = "Hasło musi mieć co najmniej 6 znaków";
+        errorMessage = "Hasło musi mieć co najmniej 8 znaków, dużą i małą literę oraz cyfrę";
       } else if (error.message.includes("Invalid email")) {
         errorMessage = "Podaj prawidłowy adres email";
       } else if (error.message.includes("Password is too weak")) {
         errorMessage = "Hasło jest zbyt słabe";
+      } else if (error.message.includes("Signup is disabled")) {
+        errorMessage = "Rejestracja jest tymczasowo niedostępna";
       }
 
       const response = error401(errorMessage);

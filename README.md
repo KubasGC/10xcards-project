@@ -56,6 +56,26 @@ git clone <this-repo-url>
 cd 10xcards-project
 nvm use # ensures Node 22.14.0
 npm ci
+```
+
+Environment variables:
+
+Create a `.env` file in the project root with the following variables:
+
+```bash
+# Supabase Configuration
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_KEY=your-anon-key-here
+
+# OpenRouter AI Configuration
+OPENROUTER_API_KEY=sk-or-v1-your-api-key-here
+```
+
+Note: `OPENROUTER_MODEL` is configured in `wrangler.toml` and defaults to `google/gemini-2.5-flash-lite`.
+
+Start development server:
+
+```bash
 npm run dev
 ```
 
@@ -78,8 +98,9 @@ npm run format
 
 Notes:
 
-- This repository currently contains the Astro + React scaffold and UI foundations. Supabase and OpenRouter configuration will be added during implementation of the MVP features (see Scope below).
-- The Astro dev server typically runs at http://localhost:3000 by default.
+- Make sure to configure your `.env` file with valid Supabase and OpenRouter credentials before running the development server.
+- Get your OpenRouter API key at https://openrouter.ai/keys
+- The Astro dev server typically runs at http://localhost:4321 by default.
 
 ### Available scripts
 
