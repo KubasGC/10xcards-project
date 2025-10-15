@@ -1,0 +1,16 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import PendingFlashcardsView from "@/components/views/PendingFlashcardsView";
+import NavBar from "@/components/features/NavBar.astro";
+
+/**
+ * Strona sekcji Oczekujące - pending flashcards
+ * Wyświetla wygenerowane przez AI kandydaty na fiszki oczekujące na akceptację
+ * Chroniona przez auth middleware - tylko dla zalogowanych użytkowników
+ */
+---
+
+<Layout title="Oczekujące fiszki - 10xCards">
+  <NavBar />
+  <PendingFlashcardsView client:load />
+</Layout>
