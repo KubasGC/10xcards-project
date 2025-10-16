@@ -116,7 +116,7 @@ export function error500(
   logContext?: Record<string, unknown>
 ): { status: number; body: ErrorResponseDTO } {
   // Log context for debugging (not sent to client)
-  if (logContext) {
+  if (logContext && import.meta.env.DEV) {
     console.error("Internal server error:", logContext);
   }
 

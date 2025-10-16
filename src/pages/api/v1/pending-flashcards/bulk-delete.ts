@@ -30,7 +30,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
     // Walidacja body
     try {
       bulkDeleteSchema.parse(body);
-    } catch (error) {
+    } catch {
       const response = error400("Invalid request body. pending_ids must be an array of 1-50 UUIDs");
       return new Response(JSON.stringify(response.body), {
         status: response.status,

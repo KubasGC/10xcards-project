@@ -23,7 +23,6 @@ export default function PendingFlashcardsView() {
     bulkAcceptFlashcards,
     bulkRejectFlashcards,
     clearError,
-    fetchPendingFlashcards,
     fetchSets,
   } = usePendingFlashcards();
 

@@ -161,7 +161,7 @@ export function useGenerateFlashcards() {
         return null;
       }
     },
-    []
+    [fetchQuota]
   );
 
   /**

@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { error401, error400, error500, error404 } from "@/lib/helpers/api-error.helper";
 import { z } from "zod";
-import type { AcceptPendingFlashcardCommand, AcceptPendingFlashcardResponseDTO, CreateSetCommand } from "@/types";
+import type { AcceptPendingFlashcardCommand, AcceptPendingFlashcardResponseDTO } from "@/types";
 
 // Schemat dla body
 const acceptSchema = z.union([
@@ -49,7 +49,7 @@ export const POST: APIRoute = async ({ locals, request, params }) => {
     // Walidacja body
     try {
       acceptSchema.parse(body);
-    } catch (error) {
+    } catch {
       const response = error400("Either set_id or new_set must be provided");
       return new Response(JSON.stringify(response.body), {
         status: response.status,
@@ -89,7 +89,9 @@ export const POST: APIRoute = async ({ locals, request, params }) => {
         .single();
 
       if (createSetError || !newSet) {
-        console.error("Error creating set:", createSetError);
+        if (import.meta.env.DEV) {
+          console.error("Error creating set:", createSetError);
+        }
         const response = error500("Failed to create set");
         return new Response(JSON.stringify(response.body), {
           status: response.status,
@@ -137,7 +139,9 @@ export const POST: APIRoute = async ({ locals, request, params }) => {
       .single();
 
     if (createFlashcardError || !newFlashcard) {
-      console.error("Error creating flashcard:", createFlashcardError);
+      if (import.meta.env.DEV) {
+        console.error("Error creating flashcard:", createFlashcardError);
+      }
       const response = error500("Failed to create flashcard");
       return new Response(JSON.stringify(response.body), {
         status: response.status,
@@ -153,7 +157,9 @@ export const POST: APIRoute = async ({ locals, request, params }) => {
       .eq("user_id", locals.user.id);
 
     if (deleteError) {
-      console.error("Error deleting pending flashcard:", deleteError);
+      if (import.meta.env.DEV) {
+        console.error("Error deleting pending flashcard:", deleteError);
+      }
       // Nie zwracaj błędu - fiszka już została utworzona
     }
 
@@ -166,7 +172,9 @@ export const POST: APIRoute = async ({ locals, request, params }) => {
       .single();
 
     if (setInfoError || !setInfo) {
-      console.error("Error fetching set info:", setInfoError);
+      if (import.meta.env.DEV) {
+        console.error("Error fetching set info:", setInfoError);
+      }
       // Zwróć podstawowe informacje o zestawie
       const result: AcceptPendingFlashcardResponseDTO = {
         flashcard: {
@@ -211,7 +219,9 @@ export const POST: APIRoute = async ({ locals, request, params }) => {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("Unexpected error in pending-flashcards accept:", error);
+    if (import.meta.env.DEV) {
+      console.error("Unexpected error in pending-flashcards accept:", error);
+    }
     const response = error500("An unexpected error occurred");
     return new Response(JSON.stringify(response.body), {
       status: response.status,

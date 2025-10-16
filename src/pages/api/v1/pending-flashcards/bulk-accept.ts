@@ -4,7 +4,6 @@ import { z } from "zod";
 import type {
   BulkAcceptPendingFlashcardsCommand,
   BulkAcceptResponseDTO,
-  CreateSetCommand,
   FlashcardDTO,
   BulkAcceptFailureDTO,
 } from "@/types";
@@ -48,7 +47,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
     // Walidacja body
     try {
       bulkAcceptSchema.parse(body);
-    } catch (error) {
+    } catch {
       const response = error400("Invalid request body. Either set_id or new_set must be provided");
       return new Response(JSON.stringify(response.body), {
         status: response.status,
@@ -176,7 +175,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
     }
 
     // Pobierz zaktualizowaną liczbę fiszek w zestawie
-    const { data: setInfo, error: setInfoError } = await locals.supabase
+    const { data: setInfo } = await locals.supabase
       .from("sets")
       .select("flashcard_count")
       .eq("id", setId)

@@ -90,8 +90,7 @@ export function usePendingFlashcards() {
         sets: data.data,
         isLoadingSets: false,
       }));
-    } catch (error) {
-      console.error("Error fetching sets:", error);
+    } catch {
       setState((prev) => ({
         ...prev,
         isLoadingSets: false,
@@ -226,7 +225,7 @@ export function usePendingFlashcards() {
       try {
         const bulkCommand: BulkAcceptPendingFlashcardsCommand = {
           pending_ids: pendingIds,
-          ...(command.set_id ? { set_id: command.set_id } : { new_set: command.new_set! }),
+          ...(command.set_id ? { set_id: command.set_id } : { new_set: command.new_set }),
         } as BulkAcceptPendingFlashcardsCommand;
 
         const response = await fetch("/api/v1/pending-flashcards/bulk-accept", {
@@ -243,7 +242,6 @@ export function usePendingFlashcards() {
         const result: BulkAcceptResponseDTO = await response.json();
 
         // Usuń zaakceptowane fiszki z listy oczekujących
-        const acceptedIds = new Set(result.flashcards.map((fc) => pendingIds[result.flashcards.indexOf(fc)]));
         setState((prev) => ({
           ...prev,
           pendingFlashcards: prev.pendingFlashcards.filter((fc) => !pendingIds.includes(fc.id)),

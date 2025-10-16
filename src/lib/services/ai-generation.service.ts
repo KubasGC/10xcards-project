@@ -42,7 +42,9 @@ export async function checkDailyQuota(supabase: typeof supabaseClient, userId: s
     .gte("created_at", todayIso);
 
   if (error) {
-    console.error("Error checking daily quota:", { error, userId });
+    if (import.meta.env.DEV) {
+      console.error("Error checking daily quota:", { error, userId });
+    }
     throw new Error("Failed to check daily quota");
   }
 
@@ -77,7 +79,9 @@ export async function savePendingFlashcards(
     .select("id, front_draft, back_draft, created_at, updated_at");
 
   if (error) {
-    console.error("Error saving pending flashcards:", { error, userId, count: inserts.length });
+    if (import.meta.env.DEV) {
+      console.error("Error saving pending flashcards:", { error, userId, count: inserts.length });
+    }
     throw new Error("Failed to save pending flashcards");
   }
 
@@ -118,7 +122,9 @@ export async function recordAnalytics(
 
   // Don't throw - analytics errors shouldn't block the response
   if (error) {
-    console.warn("Failed to record analytics (non-blocking):", { error, userId });
+    if (import.meta.env.DEV) {
+      console.warn("Failed to record analytics (non-blocking):", { error, userId });
+    }
   }
 }
 
