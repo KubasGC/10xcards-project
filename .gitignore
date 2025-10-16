@@ -24,3 +24,5 @@ pnpm-debug.log*
 .idea/
 .claude/settings.local.json
 .wrangler
+coverage
+playwright-report

@@ -92,7 +92,11 @@ export function SetManagement({ set }: SetManagementProps) {
           </svg>
           Edytuj
         </Button>
-        <Button variant="outline" onClick={() => setIsDeleteOpen(true)} className="gap-2 border-red-300 text-red-600 hover:bg-red-50">
+        <Button
+          variant="outline"
+          onClick={() => setIsDeleteOpen(true)}
+          className="gap-2 border-red-300 text-red-600 hover:bg-red-50"
+        >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
@@ -110,16 +114,12 @@ export function SetManagement({ set }: SetManagementProps) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edytuj zestaw</DialogTitle>
-            <DialogDescription>
-              Wprowadź zmiany w nazwie lub opisie zestawu.
-            </DialogDescription>
+            <DialogDescription>Wprowadź zmiany w nazwie lub opisie zestawu.</DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleEditSubmit} className="space-y-4">
             {editError && (
-              <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-sm">
-                {editError}
-              </div>
+              <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-sm">{editError}</div>
             )}
 
             <div>
@@ -154,12 +154,7 @@ export function SetManagement({ set }: SetManagementProps) {
             </div>
 
             <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setIsEditOpen(false)}
-                disabled={isEditLoading}
-              >
+              <Button type="button" variant="outline" onClick={() => setIsEditOpen(false)} disabled={isEditLoading}>
                 Anuluj
               </Button>
               <Button type="submit" disabled={isEditLoading}>
@@ -188,31 +183,20 @@ export function SetManagement({ set }: SetManagementProps) {
               <DialogTitle>Usuń zestaw</DialogTitle>
             </div>
             <DialogDescription>
-              Czy na pewno chcesz usunąć ten zestaw? Wszystkie fiszki w tym zestawie zostaną trwale usunięte. Tej operacji nie można cofnąć.
+              Czy na pewno chcesz usunąć ten zestaw? Wszystkie fiszki w tym zestawie zostaną trwale usunięte. Tej
+              operacji nie można cofnąć.
             </DialogDescription>
           </DialogHeader>
 
           {deleteError && (
-            <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-sm">
-              {deleteError}
-            </div>
+            <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-sm">{deleteError}</div>
           )}
 
           <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setIsDeleteOpen(false)}
-              disabled={isDeleteLoading}
-            >
+            <Button type="button" variant="outline" onClick={() => setIsDeleteOpen(false)} disabled={isDeleteLoading}>
               Anuluj
             </Button>
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={handleDelete}
-              disabled={isDeleteLoading}
-            >
+            <Button type="button" variant="destructive" onClick={handleDelete} disabled={isDeleteLoading}>
               {isDeleteLoading ? "Usuwanie..." : "Usuń zestaw"}
             </Button>
           </DialogFooter>
