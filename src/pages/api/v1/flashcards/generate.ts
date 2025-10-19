@@ -6,25 +6,22 @@
  */
 
 import type { APIRoute } from "astro";
-import type { GenerateFlashcardsResponseDTO } from "../../../../types";
+import type { GenerateFlashcardsResponseDTO } from "@/types";
 
-import {
-  validateGenerateFlashcardsInput,
-  FlashcardsResponseSchema,
-} from "../../../../lib/schemas/generate-flashcards.schema";
-import { error400, error401, error429, error500, error503 } from "../../../../lib/helpers/api-error.helper";
+import { validateGenerateFlashcardsInput, FlashcardsResponseSchema } from "@/lib/schemas/generate-flashcards.schema";
+import { error400, error401, error429, error500, error503 } from "@/lib/helpers/api-error.helper";
 import {
   checkDailyQuota,
   savePendingFlashcards,
   recordAnalytics,
   getNextMidnightUTC,
-} from "../../../../lib/services/ai-generation.service";
-import { OpenRouterService } from "../../../../lib/services/openrouter.service";
+} from "@/lib/services/ai-generation.service";
+import { OpenRouterService } from "@/lib/services/openrouter.service";
 import {
   OpenRouterAPIError,
   OpenRouterResponseError,
   OpenRouterConfigurationError,
-} from "../../../../lib/services/openrouter.types";
+} from "@/lib/services/openrouter.types";
 
 // Daily quota limit per user
 const DAILY_QUOTA_LIMIT = 10;

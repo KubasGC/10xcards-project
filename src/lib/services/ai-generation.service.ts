@@ -35,6 +35,10 @@ export async function checkDailyQuota(supabase: typeof supabaseClient, userId: s
   today.setUTCHours(0, 0, 0, 0);
   const todayIso = today.toISOString();
 
+  if (import.meta.env.E2E_TESTS === "1") {
+    return 0;
+  }
+
   const { count, error } = await supabase
     .from("ai_generation_analytics")
     .select("*", { count: "exact", head: true })

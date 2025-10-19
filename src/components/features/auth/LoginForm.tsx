@@ -60,8 +60,8 @@ export function LoginForm() {
         throw new Error(data?.error?.message || "Błąd logowania");
       }
 
-      // Success - redirect to generate page
-      window.location.href = "/generate";
+      // Success - redirect to dashboard page
+      window.location.href = "/dashboard";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Wystąpił nieoczekiwany błąd");
     } finally {
