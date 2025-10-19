@@ -10,7 +10,6 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { OpenRouterService } from "./openrouter.service";
-import { z } from "zod";
 import { OpenRouterConfigurationError, OpenRouterAPIError, OpenRouterResponseError } from "./openrouter.types";
 import { FlashcardsResponseSchema } from "../schemas/generate-flashcards.schema";
 
