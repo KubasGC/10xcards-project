@@ -11,7 +11,17 @@ vi.mock("@/lib/services/auth.service", () => ({
 
 describe("AuthForm", () => {
   it("renders login form by default", () => {
-    render(<AuthForm />);
+    render(
+      <AuthForm title="Zaloguj się">
+        <div>
+          <label htmlFor="email">Email</label>
+          <input id="email" type="email" />
+          <label htmlFor="password">Hasło</label>
+          <input id="password" type="password" />
+          <button>Zaloguj się</button>
+        </div>
+      </AuthForm>
+    );
 
     expect(screen.getByRole("heading", { name: /zaloguj się/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
@@ -21,7 +31,17 @@ describe("AuthForm", () => {
 
   it("switches to register form when clicking register link", async () => {
     const user = userEvent.setup();
-    render(<AuthForm />);
+    render(
+      <AuthForm title="Zaloguj się">
+        <div>
+          <label htmlFor="email">Email</label>
+          <input id="email" type="email" />
+          <label htmlFor="password">Hasło</label>
+          <input id="password" type="password" />
+          <button>Zaloguj się</button>
+        </div>
+      </AuthForm>
+    );
 
     const registerLink = screen.getByText(/zarejestruj się/i);
     await user.click(registerLink);
@@ -33,7 +53,17 @@ describe("AuthForm", () => {
 
   it("validates required fields", async () => {
     const user = userEvent.setup();
-    render(<AuthForm />);
+    render(
+      <AuthForm title="Zaloguj się">
+        <div>
+          <label htmlFor="email">Email</label>
+          <input id="email" type="email" />
+          <label htmlFor="password">Hasło</label>
+          <input id="password" type="password" />
+          <button>Zaloguj się</button>
+        </div>
+      </AuthForm>
+    );
 
     const submitButton = screen.getByRole("button", { name: /zaloguj się/i });
     await user.click(submitButton);
@@ -44,7 +74,17 @@ describe("AuthForm", () => {
 
   it("submits form with valid data", async () => {
     const user = userEvent.setup();
-    render(<AuthForm />);
+    render(
+      <AuthForm title="Zaloguj się">
+        <div>
+          <label htmlFor="email">Email</label>
+          <input id="email" type="email" />
+          <label htmlFor="password">Hasło</label>
+          <input id="password" type="password" />
+          <button>Zaloguj się</button>
+        </div>
+      </AuthForm>
+    );
 
     const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByLabelText(/hasło/i);
