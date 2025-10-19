@@ -1,5 +1,5 @@
-<testsuites id="" name="" tests="25" failures="0" skipped="25" errors="0" time="0.035635999999999966">
-<testsuite name="auth.spec.ts" timestamp="2025-10-16T00:06:27.640Z" hostname="chromium" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testsuites id="" name="" tests="25" failures="0" skipped="25" errors="0" time="0.029906000000000064">
+<testsuite name="auth.spec.ts" timestamp="2025-10-19T11:36:29.510Z" hostname="chromium" tests="5" failures="0" skipped="5" time="0" errors="0">
 <testcase name="Authentication Flow › should display login form on homepage" classname="auth.spec.ts" time="0">
 <skipped>
 </skipped>
@@ -21,7 +21,7 @@
 </skipped>
 </testcase>
 </testsuite>
-<testsuite name="auth.spec.ts" timestamp="2025-10-16T00:06:27.640Z" hostname="firefox" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testsuite name="auth.spec.ts" timestamp="2025-10-19T11:36:29.510Z" hostname="firefox" tests="5" failures="0" skipped="5" time="0" errors="0">
 <testcase name="Authentication Flow › should display login form on homepage" classname="auth.spec.ts" time="0">
 <skipped>
 </skipped>
@@ -43,7 +43,7 @@
 </skipped>
 </testcase>
 </testsuite>
-<testsuite name="auth.spec.ts" timestamp="2025-10-16T00:06:27.640Z" hostname="webkit" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testsuite name="auth.spec.ts" timestamp="2025-10-19T11:36:29.510Z" hostname="webkit" tests="5" failures="0" skipped="5" time="0" errors="0">
 <testcase name="Authentication Flow › should display login form on homepage" classname="auth.spec.ts" time="0">
 <skipped>
 </skipped>
@@ -65,7 +65,7 @@
 </skipped>
 </testcase>
 </testsuite>
-<testsuite name="auth.spec.ts" timestamp="2025-10-16T00:06:27.640Z" hostname="Mobile Chrome" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testsuite name="auth.spec.ts" timestamp="2025-10-19T11:36:29.510Z" hostname="Mobile Chrome" tests="5" failures="0" skipped="5" time="0" errors="0">
 <testcase name="Authentication Flow › should display login form on homepage" classname="auth.spec.ts" time="0">
 <skipped>
 </skipped>
@@ -87,7 +87,7 @@
 </skipped>
 </testcase>
 </testsuite>
-<testsuite name="auth.spec.ts" timestamp="2025-10-16T00:06:27.640Z" hostname="Mobile Safari" tests="5" failures="0" skipped="5" time="0" errors="0">
+<testsuite name="auth.spec.ts" timestamp="2025-10-19T11:36:29.510Z" hostname="Mobile Safari" tests="5" failures="0" skipped="5" time="0" errors="0">
 <testcase name="Authentication Flow › should display login form on homepage" classname="auth.spec.ts" time="0">
 <skipped>
 </skipped>

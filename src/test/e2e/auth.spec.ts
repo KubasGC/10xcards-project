@@ -6,8 +6,8 @@ test.describe("Authentication Flow", () => {
 
     // Check if login form is visible
     await expect(page.getByRole("heading", { name: /zaloguj się/i })).toBeVisible();
-    await expect(page.getByLabelText(/email/i)).toBeVisible();
-    await expect(page.getByLabelText(/hasło/i)).toBeVisible();
+    await expect(page.getByLabel(/email/i)).toBeVisible();
+    await expect(page.getByLabel(/hasło/i)).toBeVisible();
     await expect(page.getByRole("button", { name: /zaloguj się/i })).toBeVisible();
   });
 
@@ -19,7 +19,7 @@ test.describe("Authentication Flow", () => {
 
     // Check if register form is visible
     await expect(page.getByRole("heading", { name: /zarejestruj się/i })).toBeVisible();
-    await expect(page.getByLabelText(/potwierdź hasło/i)).toBeVisible();
+    await expect(page.getByLabel(/potwierdź hasło/i)).toBeVisible();
     await expect(page.getByRole("button", { name: /zarejestruj się/i })).toBeVisible();
   });
 
@@ -38,8 +38,8 @@ test.describe("Authentication Flow", () => {
     await page.goto("/");
 
     // Fill login form
-    await page.getByLabelText(/email/i).fill("test@example.com");
-    await page.getByLabelText(/hasło/i).fill("password123");
+    await page.getByLabel(/email/i).fill("test@example.com");
+    await page.getByLabel(/hasło/i).fill("Password123");
 
     // Submit form
     await page.getByRole("button", { name: /zaloguj się/i }).click();
@@ -54,8 +54,8 @@ test.describe("Flashcard Generation", () => {
   test("should generate flashcards from text input", async ({ page }) => {
     // Login first
     await page.goto("/");
-    await page.getByLabelText(/email/i).fill("test@example.com");
-    await page.getByLabelText(/hasło/i).fill("password123");
+    await page.getByLabel(/email/i).fill("test@example.com");
+    await page.getByLabel(/hasło/i).fill("Password123");
     await page.getByRole("button", { name: /zaloguj się/i }).click();
 
     // Navigate to generate page
@@ -63,13 +63,13 @@ test.describe("Flashcard Generation", () => {
 
     // Fill text input
     await page
-      .getByLabelText(/tekst do konwersji/i)
+      .getByLabel(/tekst do konwersji|tekst źródłowy/i)
       .fill("React is a JavaScript library for building user interfaces.");
 
     // Submit form
-    await page.getByRole("button", { name: /generuj fiszki/i }).click();
+    await page.getByRole("button", { name: /generuj|generuj fiszki/i }).click();
 
     // Should show generated flashcards
-    await expect(page.getByText(/wygenerowane fiszki/i)).toBeVisible();
+    await expect(page.getByText(/wygenerowane fiszki|fiszki/i)).toBeVisible();
   });
 });

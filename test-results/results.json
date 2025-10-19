@@ -1,7 +1,7 @@
 {
   "config": {
     "configFile": "/Users/jakubskakuj/Development/repos/10xcards-project/playwright.config.ts",
-    "rootDir": "/Users/jakubskakuj/Development/repos/10xcards-project/tests/e2e",
+    "rootDir": "/Users/jakubskakuj/Development/repos/10xcards-project/src/test/e2e",
     "forbidOnly": false,
     "fullyParallel": true,
     "globalSetup": null,
@@ -43,7 +43,7 @@
         "metadata": {},
         "id": "chromium",
         "name": "chromium",
-        "testDir": "/Users/jakubskakuj/Development/repos/10xcards-project/tests/e2e",
+        "testDir": "/Users/jakubskakuj/Development/repos/10xcards-project/src/test/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -57,7 +57,7 @@
         "metadata": {},
         "id": "firefox",
         "name": "firefox",
-        "testDir": "/Users/jakubskakuj/Development/repos/10xcards-project/tests/e2e",
+        "testDir": "/Users/jakubskakuj/Development/repos/10xcards-project/src/test/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -71,7 +71,7 @@
         "metadata": {},
         "id": "webkit",
         "name": "webkit",
-        "testDir": "/Users/jakubskakuj/Development/repos/10xcards-project/tests/e2e",
+        "testDir": "/Users/jakubskakuj/Development/repos/10xcards-project/src/test/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -85,7 +85,7 @@
         "metadata": {},
         "id": "Mobile Chrome",
         "name": "Mobile Chrome",
-        "testDir": "/Users/jakubskakuj/Development/repos/10xcards-project/tests/e2e",
+        "testDir": "/Users/jakubskakuj/Development/repos/10xcards-project/src/test/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -99,7 +99,7 @@
         "metadata": {},
         "id": "Mobile Safari",
         "name": "Mobile Safari",
-        "testDir": "/Users/jakubskakuj/Development/repos/10xcards-project/tests/e2e",
+        "testDir": "/Users/jakubskakuj/Development/repos/10xcards-project/src/test/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
@@ -648,8 +648,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-10-16T00:06:27.605Z",
-    "duration": 35.63599999999997,
+    "startTime": "2025-10-19T11:36:29.481Z",
+    "duration": 29.906000000000063,
     "expected": 0,
     "skipped": 25,
     "unexpected": 0,
