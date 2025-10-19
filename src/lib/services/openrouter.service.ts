@@ -66,7 +66,7 @@ export class OpenRouterService {
    * @throws {OpenRouterConfigurationError} If API key or model is missing
    */
   constructor(config: OpenRouterServiceConfig = {}) {
-    if (import.meta.env.E2E_TESTS === "1") {
+    if (process.env.E2E_TESTS === "1") {
       this.apiKey = "test-api-key";
       this.model = "test-model";
       return;
@@ -117,7 +117,7 @@ export class OpenRouterService {
    * ```
    */
   async generateFlashcards<T extends z.ZodTypeAny>(params: GenerateFlashcardsParams<T>): Promise<z.infer<T>> {
-    if (import.meta.env.E2E_TESTS === "1") {
+    if (process.env.E2E_TESTS === "1") {
       return {
         flashcards: [{ front: "Test question", back: "Test answer" }],
       };

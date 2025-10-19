@@ -98,9 +98,10 @@ test.describe("Flashcard Generation", () => {
 
     // Submit form
     await page.getByRole("button", { name: "Generuj fiszki" }).click();
+    await page.waitForURL("/pending");
     await page.waitForLoadState("networkidle");
 
     // Should show generated flashcards
-    await expect(page.getByText(/wygenerowane fiszki|fiszki/i)).toBeVisible();
+    await expect(page.getByText(/oczekujących fiszek/i)).toBeVisible();
   });
 });

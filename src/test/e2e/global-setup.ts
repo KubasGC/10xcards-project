@@ -55,7 +55,10 @@ async function globalSetup() {
 
       if (usingServiceRole) {
         // With service role, we can delete all records
-        const { error } = await supabase.from(tableName).delete().neq("id", "00000000-0000-0000-0000-000000000000"); // Delete all records
+        const { error } = await supabase
+          .from(tableName)
+          .delete()
+          .neq("created_at", new Date("2055-01-01").toISOString());
 
         if (error) {
           console.warn(`⚠️  Could not truncate ${tableName}:`, error.message);

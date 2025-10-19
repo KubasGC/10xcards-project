@@ -12,6 +12,12 @@
       "name": "E2E Development server",
       "request": "launch",
       "type": "node-terminal"
+    },
+    {
+      "command": "npm run test:e2e:ui",
+      "name": "E2E test UI",
+      "request": "launch",
+      "type": "node-terminal"
     }
   ]
 }
