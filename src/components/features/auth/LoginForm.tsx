@@ -1,71 +1,28 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthForm } from "./AuthForm";
+import { useAuth } from "@/hooks/useAuth";
+import { loginSchema, type LoginInput } from "@/lib/schemas/auth.schema";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [fieldErrors, setFieldErrors] = useState<{
-    email?: string;
-    password?: string;
-  }>({});
+  const form = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    mode: "onSubmit",
+  });
 
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  const { login, isLoading, error } = useAuth();
 
-  const validateForm = (): boolean => {
-    const errors: { email?: string; password?: string } = {};
-
-    if (!email.trim()) {
-      errors.email = "Email jest wymagany";
-    } else if (!validateEmail(email)) {
-      errors.email = "Podaj prawidłowy adres email";
-    }
-
-    if (!password) {
-      errors.password = "Hasło jest wymagane";
-    } else if (password.length < 8) {
-      errors.password = "Hasło musi mieć co najmniej 8 znaków";
-    }
-
-    setFieldErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setFieldErrors({});
-
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      const response = await fetch("/api/v1/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        // Handle general error
-        throw new Error(data?.error?.message || "Błąd logowania");
-      }
-
-      // Success - redirect to dashboard page
-      window.location.href = "/dashboard";
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Wystąpił nieoczekiwany błąd");
-    } finally {
-      setIsLoading(false);
+  const handleSubmit = async (values: LoginInput) => {
+    const isValid = await form.trigger();
+    if (isValid) {
+      login(values);
     }
   };
 
@@ -86,84 +43,80 @@ export function LoginForm() {
       error={error}
       footer={footer}
     >
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Email Field */}
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              if (fieldErrors.email) {
-                setFieldErrors((prev) => ({ ...prev, email: undefined }));
-              }
-            }}
-            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all ${
-              fieldErrors.email ? "border-red-500 bg-red-50" : "border-gray-300 bg-white"
-            }`}
-            placeholder="twoj@email.com"
-            disabled={isLoading}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          {/* Email Field */}
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-medium text-gray-700">Email</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="email"
+                    placeholder="twoj@email.com"
+                    disabled={isLoading}
+                    className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {fieldErrors.email && <p className="mt-2 text-sm text-red-600">{fieldErrors.email}</p>}
-        </div>
 
-        {/* Password Field */}
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-            Hasło
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              if (fieldErrors.password) {
-                setFieldErrors((prev) => ({ ...prev, password: undefined }));
-              }
-            }}
-            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all ${
-              fieldErrors.password ? "border-red-500 bg-red-50" : "border-gray-300 bg-white"
-            }`}
-            placeholder="••••••••"
-            disabled={isLoading}
+          {/* Password Field */}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-medium text-gray-700">Hasło</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    placeholder="••••••••"
+                    disabled={isLoading}
+                    className="px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          {fieldErrors.password && <p className="mt-2 text-sm text-red-600">{fieldErrors.password}</p>}
-        </div>
 
-        {/* Forgot Password Link */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <input
-              id="remember"
-              type="checkbox"
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
-            />
-            <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
-              Zapamiętaj mnie
-            </label>
+          {/* Forgot Password Link */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                id="remember"
+                type="checkbox"
+                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+              />
+              <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
+                Zapamiętaj mnie
+              </label>
+            </div>
+            <a
+              href="/forgot-password"
+              className="text-sm font-medium text-primary hover:text-primary/90 transition-colors"
+            >
+              Zapomniałeś hasła?
+            </a>
           </div>
-          <a
-            href="/forgot-password"
-            className="text-sm font-medium text-primary hover:text-primary/90 transition-colors"
-          >
-            Zapomniałeś hasła?
-          </a>
-        </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-medium py-3 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isLoading ? "Logowanie..." : "Zaloguj się"}
-        </button>
-      </form>
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-medium py-3 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoading ? "Logowanie..." : "Zaloguj się"}
+          </Button>
+        </form>
+      </Form>
     </AuthForm>
   );
 }
