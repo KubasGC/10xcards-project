@@ -87,14 +87,18 @@ test.describe("Flashcard Generation", () => {
 
     // Navigate to generate page
     await page.goto("/generate");
+    await page.waitForLoadState("networkidle");
 
     // Fill text input
     await page
       .getByLabel(/tekst do konwersji|tekst źródłowy/i)
-      .fill("React is a JavaScript library for building user interfaces.");
+      .fill(
+        "Sejm Rzeczypospolitej Polskiej (Sejm RP), Sejm[1] – jedna z dwóch izb parlamentu Rzeczypospolitej Polskiej tradycyjnie określana jako: „izba niższa”. Izba Poselska wyłoniła się z Sejmu walnego w 1493 r.; od uchwalenia ustawy nihil novi (1505 r.) Sejm jest najwyższym organem władzy ustawodawczej w Polsce.  W III Rzeczypospolitej Sejm stanowi niższą izbę polskiego parlamentu. Składa się on z 460 posłów, wybieranych w wyborach powszechnych, równych, bezpośrednich i proporcjonalnych, w głosowaniu tajnym (wybory pięcioprzymiotnikowe)[2]. Kadencja Sejmu, zgodnie z Konstytucją, trwa 4 lata; biegnie od dnia pierwszego posiedzenia nowo wybranego Sejmu i trwa do dnia poprzedzającego dzień zebrania się Sejmu następnej kadencji. Zakończenie kadencji może także nastąpić w wyniku jej skrócenia przez Sejm (uchwałą podjętą większością 2/3 ustawowej liczby posłów na podstawie art. 98 ust. 3 Konstytucji) albo przez Prezydenta RP: obligatoryjnie (obowiązkowo), jeżeli procedura zasadnicza powoływania Rady Ministrów oraz obie procedury rezerwowe zakończą się fiaskiem lub fakultatywnie (nieobowiązkowo), jeżeli Prezydent, w ciągu 4 miesięcy od dnia przedłożenia projektu ustawy budżetowej Sejmowi przez Radę Ministrów, nie otrzyma jej do podpisu (na wydanie postanowienia w tej sprawie przysługuje głowie państwa czas 14 dni).  Bierne prawo wyborcze w wyborach do Sejmu RP uzyskuje się w wieku 21 lat, zgodnie z Konstytucją posłem nie może być osoba skazana za przestępstwo umyślne ścigane z oskarżenia publicznego na karę pozbawiania wolności (art. 99 ust. 3 Konstytucji RP), a także osoba ubezwłasnowolniona, pozbawiona praw publicznych lub wyborczych. Poza tym występuje w polskim porządku prawnym zasada incompatibilis, tj. nie można jednocześnie być posłem i pełnić określonych urzędów m.in. Rzecznika Praw Obywatelskich, sędziego, żołnierza czy policjanta.  Sejm działa w trybie permanencji (art. 109 Konstytucji RP), tj. w trakcie kadencji Sejm może zostać zwołany w każdym momencie bez zgody innych organów. Niższa izba obraduje pod przewodnictwem marszałka[3][4]. Jego obrady co do zasady są jawne, jednak Sejm może w szczególnych wypadkach uchwalić utajnienie obrad bezwzględną większością głosów[5]. Posiedzenia Sejmu odbywają się zazwyczaj co drugi lub co trzeci tydzień (tzw. tydzień sejmowy). Dłuższe przerwy zdarzają się w okresie wakacyjnym oraz świąteczno-noworocznym, a także pomiędzy ostatnim posiedzeniem Sejmu poprzedniej kadencji i pierwszym posiedzeniem nowej kadencji.  Urzędem wspierającym Sejm i jego organy w zakresie prawnym, organizacyjnym, finansowym i technicznym jest Kancelaria Sejmu.  Kompleks budynków Sejmu i Senatu jest usytuowany na skarpie wiślanej w rejonie ulic Wiejskiej, Górnośląskiej i Piotra Maszyńskiego w Warszawie."
+      );
 
     // Submit form
-    await page.getByRole("button", { name: /generuj|generuj fiszki/i }).click();
+    await page.getByRole("button", { name: "Generuj fiszki" }).click();
+    await page.waitForLoadState("networkidle");
 
     // Should show generated flashcards
     await expect(page.getByText(/wygenerowane fiszki|fiszki/i)).toBeVisible();
