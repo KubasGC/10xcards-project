@@ -154,6 +154,8 @@ export class OpenRouterService {
           schema: schema,
         },
       },
+      temperature: 0.7,
+      max_tokens: 2000,
       ...modelParams,
     };
   }

@@ -145,11 +145,12 @@ export function calculateCost(totalTokens: number, model: string): number {
   // Default: ~$0.01 per 1K tokens (averaged input/output for GPT-4 Turbo)
   const costPer1kTokens = 0.01;
 
-  // Some models have different pricing
-  if (model.includes("gpt-4-turbo")) {
+  // Some models have different pricing (case insensitive)
+  const modelLower = model.toLowerCase();
+  if (modelLower.includes("gpt-4-turbo")) {
     // GPT-4 Turbo: ~$0.01 input, ~$0.03 output per 1K (averaged)
     return (totalTokens / 1000) * 0.02;
-  } else if (model.includes("gpt-3.5-turbo")) {
+  } else if (modelLower.includes("gpt-3.5-turbo")) {
     // GPT-3.5 Turbo: ~$0.0005 input, ~$0.0015 output per 1K (averaged)
     return (totalTokens / 1000) * 0.001;
   }

@@ -41,18 +41,18 @@ export const FlashcardCandidateSchema = z.object({
       required_error: "front is required",
       invalid_type_error: "front must be a string",
     })
+    .trim()
     .min(1, "front must not be empty")
-    .max(500, "front must not exceed 500 characters")
-    .trim(),
+    .max(500, "front must not exceed 500 characters"),
 
   back: z
     .string({
       required_error: "back is required",
       invalid_type_error: "back must be a string",
     })
+    .trim()
     .min(1, "back must not be empty")
-    .max(1000, "back must not exceed 1000 characters")
-    .trim(),
+    .max(1000, "back must not exceed 1000 characters"),
 });
 
 /**
